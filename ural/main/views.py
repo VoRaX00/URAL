@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def index(request):
-    context = {
-        'title': 'Home',
-        'content': 'Главная страница магазина - HOME'
-    }
-    return render(request, 'main/index.html', context)
+    return render(request, 'index.html')
 
-def about(request):
-    return HttpResponse('About page')
+def login(request):
+    return render(request, 'login.html')
+
+def registration(request):
+    return render(request, 'reg.html')
+
+def profile(request):
+    return render(request, 'profile.html')
