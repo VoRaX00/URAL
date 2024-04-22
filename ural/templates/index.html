@@ -12,14 +12,14 @@
   <body>
         <nav class="navbar navbar-expand-lg navbar-dark top-menu" style="background-color: #217C6F;">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">BSCAR-GO</a>
+              <a class="navbar-brand" href="{% url "main:index" %}">BSCAR-GO</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Главная страница</a>
+                    <a class="nav-link active" aria-current="page" href="{% url "main:index" %}">Главная страница</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Найти машину</a>
@@ -40,8 +40,8 @@
                             <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Вход</a></li>
-                          <li><a class="dropdown-item" href="#">Регистрация</a></li>
+                          <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
+                          <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
                         </ul>
                     </div>
                 </ui>

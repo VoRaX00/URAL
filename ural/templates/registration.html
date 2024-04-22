@@ -13,14 +13,14 @@
     <body>
       <nav class="navbar navbar-expand-lg navbar-dark top-menu" style="background-color: #217C6F;">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">BSCAR-GO</a>
+          <a class="navbar-brand" href="{% url "main:index" %}">BSCAR-GO</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Главная страница</a>
+                <a class="nav-link active" aria-current="page" href="{% url "main:index" %}">Главная страница</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Найти машину</a>
@@ -41,8 +41,8 @@
                         <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Вход</a></li>
-                      <li><a class="dropdown-item" href="#">Регистрация</a></li>
+                      <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
+                      <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
                     </ul>
                 </div>
             </ui>
@@ -52,19 +52,24 @@
 
 
       <div class="container min-vh-100 d-flex justify-content-center align-items-center">
-          <form class = 'card p-5'>
+          <form class = 'card p-5' action= "{% url "user_app:registration" %}" method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="exampleInputName" class="form-label">Имя</label>
+                <input type="text" name='name' class="form-control" id="exampleInputName">
+              </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" name='email' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
               </div>
               <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" name='password1' class="form-control" id="exampleInputPassword1">
               </div>
               <div class="mb-3">
                   <label for="exampleInputPassword2" class="form-label">Подтвердить пароль</label>
-                  <input type="password" class="form-control" id="exampleInputPassword2">
+                  <input type="password" name='password2' class="form-control" id="exampleInputPassword2">
                 </div>
               <!-- <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -97,6 +102,8 @@
           </section>
       </footer>
 
+      <script src= '{% static "style/js/equalPassword.js" %}'></script>
       <script src= {% static "bootstrap5/js/bootstrap.bundle.min.js" %}></script>
+
     </body>
 </html>
