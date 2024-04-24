@@ -20,7 +20,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url "main:index" %}">Главная страница</a>
+                <a class="nav-link" href="{% url "main:index" %}">Главная страница</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Найти машину</a>
@@ -29,10 +29,10 @@
                 <a class="nav-link" href="#">Найти груз</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Разместить машину</a>
+                <a class="nav-link" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Разместить груз машину</a>
+                <a class="nav-link" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
               </li>
             </ul>
             <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -41,8 +41,13 @@
                         <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
-                      <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
+                      {% if user.is_authenticated %}
+                          <li><a class="dropdown-item" href="{% url "user_app:profile" %}">Профиль</a></li>
+                          <li><a class="dropdown-item" href="{% url "user_app:logout" %}">Выход</a></li>
+                      {% else %}
+                          <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
+                          <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
+                      {% endif %}
                     </ul>
                 </div>
             </ui>

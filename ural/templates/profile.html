@@ -19,7 +19,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url "main:index" %}">Главная страница</a>
+                <a class="nav-link" href="{% url "main:index" %}">Главная страница</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Найти машину</a>
@@ -28,10 +28,10 @@
                 <a class="nav-link" href="#">Найти груз</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Разместить машину</a>
+                <a class="nav-link" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Разместить груз машину</a>
+                <a class="nav-link" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
               </li>
             </ul>
             <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -40,8 +40,13 @@
                         <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
-                      <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
+                      {% if user.is_authenticated %}
+                          <li><a class="dropdown-item" href="{% url "user_app:profile" %}">Профиль</a></li>
+                          <li><a class="dropdown-item" href="{% url "user_app:logout" %}">Выход</a></li>
+                      {% else %}
+                          <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
+                          <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
+                      {% endif %}
                     </ul>
                 </div>
             </ui>
@@ -51,26 +56,27 @@
 
         <div class="container min-vh-100 d-flex justify-content-center align-items-center">
             <div class="row">
-              <div class="col-md-4">
+              {% comment %} <div class="col-md-4">
                 <div class="card">
                   <div class="card-body">
-                    {% comment %} <img src="profile-picture.jpg" class="img-fluid rounded-circle mb-3" alt="Profile Picture"> {% endcomment %}
-                    <h3 class="card-title">{{ user.useremail }}</h3>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <img src="profile-picture.jpg" class="img-fluid rounded-circle mb-3" alt="Profile Picture">
+                    <h3 class="card-title">{{ user.name }}</h3>
+                    <p class="card-text">{{user.email}}</p>
                     <a href="#" class="btn btn-primary">Edit Profile</a>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-8">
+              </div> {% endcomment %}
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <h3 class="card-title">About Me</h3>
+                    <h3 class="card-title">{{ user.name }}</h3>
+                    <h4 class="card-title">Обо мне</h3>
                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non ex eget tortor vehicula iaculis nec sit amet ex. Vivamus quis lorem nec mi tempus blandit.</p>
-                    <h3 class="card-title">Contact Information</h3>
+                    <h3 class="card-title">Контактная информация</h3>
                     <ul class="list-group">
-                      <li class="list-group-item">Email: example@example.com</li>
-                      <li class="list-group-item">Phone: +1234567890</li>
-                      <li class="list-group-item">Address: 123 Main St, City, Country</li>
+                      <li class="list-group-item">Email: {{user.email}}</li>
+                      <li class="list-group-item">Телефон: +1234567890</li>
+                      <a href="{% url "user_app:edit_profile" %}" class="btn btn-dark" style="background-color: #217C6F; mmax">Изменить профиль</a>
                     </ul>
                   </div>
                 </div>
