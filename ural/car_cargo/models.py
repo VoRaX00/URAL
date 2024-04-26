@@ -1,9 +1,10 @@
 from django.db import models
+from user_app.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
 class Cargo(models.Model):
     name = models.CharField(max_length=255, null=False, unique=False)
-    id_user = models.PositiveIntegerField(null = False, unique=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     length = models.PositiveIntegerField(null=False, unique=False)
     width = models.PositiveIntegerField(null=False, unique=False)
@@ -38,9 +39,7 @@ class Cargo(models.Model):
 
 class Car(models.Model):
     car = models.CharField(max_length=200, null=False, unique=False)
-
-    type_body = models.CharField(max_length=200, null=False, unique=False)
-    type_loading = models.CharField(max_length=200, null=False, unique=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     capacity = models.PositiveIntegerField(null=False, unique=False)
     volume = models.PositiveIntegerField(null=False, unique=False)
@@ -60,3 +59,29 @@ class Car(models.Model):
 
     class Meta:
         db_table = 'car'
+
+class typeBody(models.Model):
+    name = models.CharField(max_length=70, null=False, unique=True)
+
+    class Meta:
+        db_table = 'type_body'
+
+class carTypeBody(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    type_body = models.ForeignKey(typeBody, on_delete=models.CASCADE) 
+
+    class Meta:
+        db_table = 'car_type_body'
+
+class typeLoading(models.Model):
+    name = models.CharField(max_length=70, null=False, unique=True)
+
+    class Meta:
+        db_table = 'type_loading'
+
+class carTypeLoading(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    type_loading=models.ForeignKey(typeLoading, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'car_type_loading'

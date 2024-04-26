@@ -1,15 +1,15 @@
 $(document).ready(function() {
     // При изменении состояния первого чекбокса
-    $('#cashless_payment').change(function() {
+    $('#cboxCashless').change(function() {
         if(this.checked) {
             // Если чекбокс выбран, добавить дополнительные чекбоксы
             $('#extra_checkbox').html(`
                 <div class="mb-3">
-                    <input class="form-check-input" type="checkbox" name="nds" id="nds" value="option3">
+                    <input class="form-check-input" type="checkbox" name="cashless" id="nds" value="nds">
                     <label class="form-check-label" for="nds">НДС</label>
                 </div>
                 <div class="mb-3">
-                    <input class="form-check-input" type="checkbox" name="without_nds" id="without_nds" value="option4">
+                    <input class="form-check-input" type="checkbox" name="cashless" id="without_nds" value="without_nds">
                     <label class="form-check-label" for="without_nds">Без НДС</label>
                 </div>
             `);

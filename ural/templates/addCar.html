@@ -24,10 +24,10 @@
                     <a class="nav-link" href="{% url "main:index" %}">Главная страница</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Найти машину</a>
+                    <a class="nav-link" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Найти груз</a>
+                    <a class="nav-link" href="{% url "car_cargo:viewCargo" %}">Найти груз</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
@@ -132,23 +132,23 @@
                     <div class="col">
                         <label for="loadingType">Тип загрузки:</label>
                         <select class="form-control" id="loadingType" name="loadingType" multiple>
-                            <option value="боковая">Боковая</option>
-                            <option value="верхняя">Верхняя</option>
-                            <option value="задняя">Задняя</option>
-                            <option value="с полной растентовкой">С полной растентовкой</option>
-                            <option value="со снятием поперечных перекладин">Со снятием поперечных перекладин</option>
-                            <option value="со снятием стоек">Со снятием стоек</option>
-                            <option value="без ворот">Без ворот</option>
-                            <option value="гидроборт">Гидроборт</option>
-                            <option value="аппарели">Аппарели</option>
-                            <option value="с обрешеткой">С обрешеткой</option>
-                            <option value="с бортами">С бортами</option>
-                            <option value="боковая с 2-х сторон">Боковая с 2-х сторон</option>
-                            <option value="налив">Налив</option>
-                            <option value="электрический">Электрический</option>
-                            <option value="гидравлический">Гидравлический</option>
-                            <option value="пневматический">Пневматический</option>
-                            <option value="дизельный компрессор">Дизельный компрессор</option>
+                            <option value="Боковая">Боковая</option>
+                            <option value="Верхняя">Верхняя</option>
+                            <option value="Задняя">Задняя</option>
+                            <option value="С полной растентовкой">С полной растентовкой</option>
+                            <option value="Со снятием поперечных перекладин">Со снятием поперечных перекладин</option>
+                            <option value="Со снятием стоек">Со снятием стоек</option>
+                            <option value="Без ворот">Без ворот</option>
+                            <option value="Гидроборт">Гидроборт</option>
+                            <option value="Аппарели">Аппарели</option>
+                            <option value="С обрешеткой">С обрешеткой</option>
+                            <option value="С бортами">С бортами</option>
+                            <option value="Боковая с 2-х сторон">Боковая с 2-х сторон</option>
+                            <option value="Налив">Налив</option>
+                            <option value="Электрический">Электрический</option>
+                            <option value="Гидравлический">Гидравлический</option>
+                            <option value="Пневматический">Пневматический</option>
+                            <option value="Дизельный компрессор">Дизельный компрессор</option>
                         </select>
                     </div>
                 </div>
