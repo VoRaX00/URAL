@@ -59,6 +59,8 @@
             </div>
         </nav>
 
+        <br/>
+
         {% for cargo in cargs %}
             <div class="container" style="max-width: 32rem;">
                 <div class="card">
@@ -89,6 +91,7 @@
                                     <div class="col-8">
                                         <h6>Откуда: {{cargo.loading_place}}</h6>
                                         <h6>Куда: {{cargo.unloading_place}}</h6>
+                                        <h6>Даты: {{cargo.loading_data}} - {{cargo.unloading_data}}</h6>
                                     </div>
                                 </div>
                             </div>

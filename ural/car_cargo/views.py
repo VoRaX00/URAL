@@ -24,14 +24,16 @@ def addCargo(request):
             request_price = True
 
         id = request.user.id
+        print(request.POST['deliveryCostCash'])
         cargo = Cargo(name = request.POST['cargoName'], 
             length = request.POST['length'], width = request.POST['width'], height = request.POST['height'],
             weight = request.POST['cargoWeight'], volume = request.POST['volume'], count_place = request.POST['countPlace'],
             loading_data = request.POST['loadingDate'], unloading_data = request.POST['unloadingDate'], phone = request.POST['phone'],
             loading_place = request.POST['loading_address'], unloading_place = request.POST['unloading_address'], bcash=cash, 
-            bcashless=cashless, bcashless_nds=nds, bcashless_without_nds=without_nds, price_cash=request.POST['width'],
+            bcashless=cashless, bcashless_nds=nds, bcashless_without_nds=without_nds, price_cash=request.POST['deliveryCostCash'],
             price_cash_nds = request.POST['deliveryCostNDS'], price_cash_without_nds = request.POST['deliveryCostWithoutNDS'], 
             request_price=request_price, comment = request.POST['comment'], user_id = request.user)
+        
         
         cargo.save()
     return render(request, 'addCargo.html')
@@ -71,7 +73,9 @@ def viewCargo(request):
     #             i.bcashless_nds, i.bcashless_without_nds, i.price_cash, i.price_cash_nds, i.price_cash_without_nds, i.request_price,
     #             i.comment)
         
-    
+    for i in cargs:
+        print(i.price_cash)
+
     context = {
         'cargs' : cargs
     }
@@ -84,7 +88,7 @@ class VCar:
         self.name = _name
         self.capacity = _capacity
         self.volume = _volume
-        self.legth = _length
+        self.length = _length
         self.width = _width
         self.height = _height
         self.where_from = _where_from
@@ -99,11 +103,11 @@ class VCar:
 
 
 def viewCar(request):
-    # cars = carTypeBody.objects.all().select_related('car__user', 'type_body')
+    cars = carTypeBody.objects.all().select_related('car__user', 'type_body')
     all_cars = Car.objects.all().select_related('user')
     cars = []
     for i in all_cars:
-        car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from, i.ready_to, i.phone, i.comment)
+        car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from, i.ready_to, i.phone, i.comment,)
         # arr = [str(i.car), str(i.user.name), str(i.capacity), str(i.volume), str(i.length), 
         #        str(i.width), str(i.height), str(i.where_from),
         #        str(i.where), str(i.ready_from), str(i.ready_to), str(i.phone), str(i.comment)]
@@ -132,7 +136,6 @@ def viewCar(request):
                 break
                 
             k+=1
-        
         cars.append(car)
 
 
