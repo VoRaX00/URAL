@@ -19,3 +19,22 @@ $(document).ready(function() {
         }
     });
 });
+
+// $(document).ready(function(){
+//     $('#cboxCash').change(function() {
+//         if(this.checked) {
+//             // Если чекбокс выбран, добавить дополнительные чекбоксы
+//             $('#price_cash_checkbox').html(`
+//                 <div class="col-4">
+//                     <label for="deliveryCostCash">Наличными</label>
+//                 </div>
+//                 <div class="col-8">
+//                     <input type="number" placeholder="Наличными" class="form-control" id="deliveryCostCash" name="deliveryCostCash" min="1" style="max-width: 300px">
+//                 </div>
+//             `);
+//         } else {
+//             // Если чекбокс не выбран, удалить дополнительные чекбоксы
+//             $('#price_cash_checkbox').html('');
+//         }
+//     });
+// });

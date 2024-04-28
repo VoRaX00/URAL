@@ -58,8 +58,10 @@
             </div>
         </nav>
 
-        <div class="container min-vh-100 d-flex justify-content-center align-items-center">
-            <form class = 'card p-5' action="{% url "car_cargo:addCargo" %}"  method="post">
+        <br/>
+
+        <div class="container min-vh-100 d-flex justify-content-center align-items-center" >
+            <form class = 'card p-5' action="{% url "car_cargo:addCargo" %}" style="max-width: 800px" method="post">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="cargoName">Наименование груза:</label>
@@ -135,12 +137,12 @@
                     </div>
                     <div class="col-auto" id="extra_checkbox"></div>
                 </div>
-                <div class="mb-3">
+                {% comment %} <div class="mb-3">
                     <label>Предложить стоимость перевозки, руб.:</label>
-                </div>
+                </div> {% endcomment %}
                 <div class="mb-3 row">
                     <div class="col-8">
-                        <div class="mb-3 row">
+                        <div class="mb-3 row" id="price_cash_checkbox">
                             <div class="col-4">
                                 <label for="deliveryCostCash">Наличными</label>
                             </div>
@@ -148,7 +150,7 @@
                                 <input type="number" placeholder="Наличными" class="form-control" id="deliveryCostCash" name="deliveryCostCash" min="1" style="max-width: 300px">
                             </div>
                         </div>
-                        <div class="mb-3 row">
+                        <div class="mb-3 row" id="price_cashless_nds">
                             <div class="col-4">
                                 <label for="deliveryCostNDS">С НДС</label>
                             </div>
@@ -180,7 +182,9 @@
                 </div>                
                 <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Отправить</button>
             </form>
-          </div>
+        </div>
+
+        <br/>
 
         <footer>
             <section class="footer">
@@ -206,11 +210,42 @@
         </footer>
 
 
-        
+        {%load static %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
         <script src={% static 'style/js/autocompleteAddress.js'%}></script>
-        <script src={% static "style/js/payment.js" %}></script>
+        <script src={% static 'style/js/payment.js' %} ></script>
+        {% comment %} <script>
+            $(document).ready(function(){
+                $('#cboxCash').change(function() {
+                    if(this.checked) {
+                        // Если чекбокс выбран, добавить дополнительные чекбоксы
+                        $('#price_cash_checkbox').html(`
+                            
+                        `);
+                    } else {
+                        // Если чекбокс не выбран, удалить дополнительные чекбоксы
+                        $('#price_cash_checkbox').html('');
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function(){
+                $('#nds').change(function() {
+                    if(this.checked) {
+                        // Если чекбокс выбран, добавить дополнительные чекбоксы
+                        $('#price_cashless_nds').html(`
+                            
+                        `);
+                    } else {
+                        // Если чекбокс не выбран, удалить дополнительные чекбоксы
+                        $('#price_cashless_nds').html('');
+                    }
+                });
+            });
+        </script> {% endcomment %}
         {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <script src = "{% static 'style/js/maskForPhone.js' %}"></script> {% endcomment %}

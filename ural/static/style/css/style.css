@@ -1,9 +1,16 @@
-body{
-   min-width: 320px; 
+html, body{
+    min-width: 320px; 
+    margin: 0;
 }
 
 section {
     padding: 50px 0;
+}
+
+.page{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
 }
 
 .navbar-dark .navbar-nav .nav-link{
@@ -29,8 +36,16 @@ section {
     transform: scale(1);
 }
 
-.footer{
+.page{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer{
     background-color: #343434;
+    margin-top: auto;
 }
 
 .footer h4{
