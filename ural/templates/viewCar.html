@@ -1,65 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA_Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Профиль</title>
-        {%load static %}
-        <link rel="stylesheet" href= {% static 'style/css/style.css' %}>
-        <link rel="stylesheet" href= {% static 'bootstrap5/css/bootstrap.min.css' %}>
-        {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
+{% extends "base.html" %}
+
+{% block title %}Машины{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+    {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
         <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
-
-    </head>
-    <body>
-        <div class="page">
-        <nav class="navbar navbar-expand-lg navbar-dark top-menu" style="background-color: #217C6F;">
-            <div class="container-fluid">
-            <a class="navbar-brand" href="{% url "main:index" %}">BSCAR-GO</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "main:index" %}">Главная страница</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:viewCargo" %}">Найти груз</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
-                </li>
-                </ul>
-                <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <div class="dropdown">
-                        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
-                        </a>
-                        <ul class="dropdown-menu">
-                        {% if user.is_authenticated %}
-                            <li><a class="dropdown-item" href="{% url "user_app:profile" %}">Профиль</a></li>
-                            <li><a class="dropdown-item" href="{% url "user_app:logout" %}">Выход</a></li>
-                        {% else %}
-                            <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
-                            <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
-                        {% endif %}
-                        </ul>
-                    </div>
-                </ui>
-            </div>
-            </div>
-        </nav>
-
-        <br/>
-
+{% block content %}
+    <br/>
         {% for car in cars %}
             <div class="container" style="max-width: 32rem;">
                 <div class="card">
@@ -113,24 +62,24 @@
                                         <h7>Грузоподъёмность, т: {{car.capacity}} кг</h7>
                                     </div>
                                     <div class="col-6">
-                                        <h7>Объём, м^3: {{car.volume}} м</h7>
+                                        <h7>Объём, м³: {{car.volume}} м</h7>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    {% if len(car.type_body) != 0 %}
-                                        <h7>Тип кузова:</h7>
+                                    <h7>Тип кузова:</h7>
+                                    <ul class="list-group">
                                         {% for i in car.type_body %}
-                                            <h7>{{i}}</h7>
+                                            <li class="list-group-item">{{i}}</li>
                                         {% endfor %}
-                                    { % endif %}
+                                    </ul>
                                 </div>
                                 <div class="mb-3 row">
-                                    {% if len(car.type_body) != 0 %}
-                                        <h7>Тип загрузки:</h7>
+                                    <h7>Тип загрузки:</h7>
+                                    <ul class="list-group">
                                         {% for i in car.type_loading %}
-                                            <h7>{{i}}</h7>
+                                            <li class="list-group-item">{{i}}</li>
                                         {% endfor %}
-                                    { % endif %}
+                                    </ul>
                                 </div>
                                 {% if cargo.bcash %}
                                     <div class="mb-3 row">
@@ -176,34 +125,10 @@
                     </div>
                 </div>
             </div>
-            </br>
-        {% endfor %}
+        </br>
+    {% endfor %}
+{% endblock content %}
 
-        <br/>
+{% block javascript %}
 
-        <footer style="margin-top: auto">
-            <section class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-6">
-                            <h4>Информация</h4>
-                            <ul class="list-unstyled">
-                                <li>ООО "БСКА-УРАЛ"</li>
-                            </ul>
-                        </div>
-    
-                        <div class="col-6">
-                            <h4>Контакты</h4>
-                            <ul class="list-unstyled">
-                                <li>Email: Bska-ural@yandex.ru</li>
-                                <li>Номер телефона: +79991259178</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </footer>
-    </div>
-        <script src= {% static "bootstrap5/js/bootstrap.bundle.min.js" %}></script>
-    </body>
-</html>
+{% endblock javascript %}

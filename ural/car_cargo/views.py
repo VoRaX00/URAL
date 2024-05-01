@@ -106,6 +106,7 @@ def viewCar(request):
     cars = carTypeBody.objects.all().select_related('car__user', 'type_body')
     all_cars = Car.objects.all().select_related('user')
     cars = []
+    
     for i in all_cars:
         car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from, i.ready_to, i.phone, i.comment,)
         # arr = [str(i.car), str(i.user.name), str(i.capacity), str(i.volume), str(i.length), 
@@ -113,19 +114,19 @@ def viewCar(request):
         #        str(i.where), str(i.ready_from), str(i.ready_to), str(i.phone), str(i.comment)]
         
         typesBody = carTypeBody.objects.all().select_related('car', 'type_body')
-        # print(typesBody)
         check = False
         j=0
         k=0
         while j < len(typesBody):
             if typesBody[j].car.id == i.id:
+                #print(typesBody[j].type_body.name)
                 car.type_body.append(typesBody[j].type_body.name)
                 check = True
             elif check:
                 break
                 
             j+=1
-        
+        print(car.type_body)
         check = False
         typesLoading = carTypeLoading.objects.all().select_related('car', 'type_loading')
         while k < len(typesLoading):
@@ -136,8 +137,10 @@ def viewCar(request):
                 break
                 
             k+=1
-        cars.append(car)
 
+        # print(car, car.type_body)
+        # print(car.type_loading)
+        cars.append(car)
 
     context = {
         'cars': cars

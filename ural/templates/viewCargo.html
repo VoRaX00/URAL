@@ -1,197 +1,123 @@
-<!DOCTYPE html>
-<html>
-    {%load static %}
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA_Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Профиль</title>
-        
-        <link rel="stylesheet" href= {% static 'style/css/style.css' %}>
-        <link rel="stylesheet" href= {% static 'bootstrap5/css/bootstrap.min.css' %}>
-        {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
+{% extends "base.html" %}
+
+{% block title %}Грузы{% endblock title %}
+
+{% block css %}
+    {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
         <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
+{% endblock css %}
 
-    </head>
-    <body>
-        <div class="page">
-        <nav class="navbar navbar-expand-lg navbar-dark top-menu" style="background-color: #217C6F;">
-            <div class="container-fluid">
-            <a class="navbar-brand" href="{% url "main:index" %}">BSCAR-GO</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "main:index" %}">Главная страница</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url "car_cargo:viewCargo" %}">Найти груз</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
-                </li>
-                </ul>
-                <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <div class="dropdown">
-                        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
-                        </a>
-                        <ul class="dropdown-menu">
-                        {% if user.is_authenticated %}
-                            <li><a class="dropdown-item" href="{% url "user_app:profile" %}">Профиль</a></li>
-                            <li><a class="dropdown-item" href="{% url "user_app:logout" %}">Выход</a></li>
-                        {% else %}
-                            <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>
-                            <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
-                        {% endif %}
-                        </ul>
-                    </div>
-                </ui>
-            </div>
-            </div>
-        </nav>
+{% block content %}
+    <br/>
+    {% for cargo in cargs %}
+        <div class="container" style="max-width: 32rem;">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#general{{cargo.id}}" 
+                        type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Общее</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#parameter{{cargo.id}}" type="button" 
+                        role="tab" aria-controls="profile-tab-pane" aria-selected="false">Характеристики</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#comment{{cargo.id}}"
+                        type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Комментарий</button>
+                        </li>
+                    </ul>
+                </div>
 
-        <br/>
-
-        {% for cargo in cargs %}
-            <div class="container" style="max-width: 32rem;">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#general{{cargo.id}}" 
-                            type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Общее</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#parameter{{cargo.id}}" type="button" 
-                            role="tab" aria-controls="profile-tab-pane" aria-selected="false">Характеристики</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#comment{{cargo.id}}"
-                            type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Комментарий</button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="general{{cargo.id}}" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                            <div class="card-body">
-                                <div class="mb-3 row">
-                                    <div class="col-4">
-                                        <h5>{{cargo.name}}</h5>
-                                    </div>
-                                    <div class="col-8">
-                                        <h6>Откуда: {{cargo.loading_place}}</h6>
-                                        <h6>Куда: {{cargo.unloading_place}}</h6>
-                                        <h6>Даты: {{cargo.loading_data}} - {{cargo.unloading_data}}</h6>
-                                    </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="general{{cargo.id}}" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <div class="card-body">
+                            <div class="mb-3 row">
+                                <div class="col-4">
+                                    <h5>{{cargo.name}}</h5>
+                                </div>
+                                <div class="col-8">
+                                    <h6>Откуда: {{cargo.loading_place}}</h6>
+                                    <h6>Куда: {{cargo.unloading_place}}</h6>
+                                    <h6>Даты: {{cargo.loading_data}} - {{cargo.unloading_data}}</h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id='parameter{{cargo.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                            <div class="card-body">
-                                <div class="mb-3 row">
-                                    <div class="col-6">
-                                        <h7>Длина: {{cargo.length}} м</h7>
-                                    </div>
-                                    <div class="col-6">
-                                        <h7>Ширина: {{cargo.width}} м</h7>
-                                    </div>
+                    </div>
+                    <div class="tab-pane fade" id='parameter{{cargo.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        <div class="card-body">
+                            <div class="mb-3 row">
+                                <div class="col-6">
+                                    <h7>Длина: {{cargo.length}} м</h7>
                                 </div>
-                                <div class="mb-3 row">
-                                    <div class="col-6">
-                                        <h7>Высота: {{cargo.height}} м</h7>
-                                    </div>
-                                    <div class="col-6">
-                                        <h7>Вес: {{cargo.weight}} кг</h7>
-                                    </div>
+                                <div class="col-6">
+                                    <h7>Ширина: {{cargo.width}} м</h7>
                                 </div>
-                                <div class="mb-3 row">
-                                    <div class="col-6">
-                                        <h7>Объём: {{cargo.volume}} м</h7>
-                                    </div>
-                                    <div class="col-6">
-                                        <h7>Количество места: {{cargo.count_place}}</h7>
-                                    </div>
-                                </div>
-                                {% if cargo.bcash %}
-                                    <div class="mb-3 row">
-                                        <div class="col-6">
-                                            <h7>Оплата: наличными</h7>
-                                        </div>
-                                        <div class="col-6">
-                                            <h7>Цена наличными: {{cargo.price_cash}} руб.</h7>
-                                        </div>
-                                    </div>
-                                {% endif %}
-
-                                {% if cargo.bcashless %}
-                                    <div class="mb-3 row">
-                                        <div class="col-6">
-                                            <h7>Оплата: безналичная</h7>
-
-                                        </div>
-                                        <div class="col-6">
-                                            {% if cargo.bcashless_nds %}
-                                                <h7>Цена с НДС: {{cargo.price_cash_nds}} руб.</h7>
-                                            {% endif %}
-
-                                            {% if cargo.bcashless_without_nds %}
-                                                <h7>Цена без НДС: {{cargo.price_cash_without_nds}} руб.</h7>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                
-                                {% if cargo.request_price %}
-                                    <div class="mb-3 row">
-                                        <h6>Указанная цена ориентировочная</h6>
-                                    </div>
-                                {% endif %}
                             </div>
+                            <div class="mb-3 row">
+                                <div class="col-6">
+                                    <h7>Высота: {{cargo.height}} м</h7>
+                                </div>
+                                <div class="col-6">
+                                    <h7>Вес: {{cargo.weight}} кг</h7>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-6">
+                                    <h7>Объём: {{cargo.volume}} м</h7>
+                                </div>
+                                <div class="col-6">
+                                    <h7>Количество места: {{cargo.count_place}}</h7>
+                                </div>
+                            </div>
+                            {% if cargo.bcash %}
+                                <div class="mb-3 row">
+                                    <div class="col-6">
+                                        <h7>Оплата: наличными</h7>
+                                    </div>
+                                    <div class="col-6">
+                                        <h7>Цена наличными: {{cargo.price_cash}} руб.</h7>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if cargo.bcashless %}
+                                <div class="mb-3 row">
+                                    <div class="col-6">
+                                        <h7>Оплата: безналичная</h7>
+
+                                    </div>
+                                    <div class="col-6">
+                                        {% if cargo.bcashless_nds %}
+                                            <h7>Цена с НДС: {{cargo.price_cash_nds}} руб.</h7>
+                                        {% endif %}
+
+                                        {% if cargo.bcashless_without_nds %}
+                                            <h7>Цена без НДС: {{cargo.price_cash_without_nds}} руб.</h7>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            {% if cargo.request_price %}
+                                <div class="mb-3 row">
+                                    <h6>Указанная цена ориентировочная</h6>
+                                </div>
+                            {% endif %}
                         </div>
-                        <div class="tab-pane fade" id="comment{{cargo.id}}" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-                            <div class="card-body">
-                                <h5>{{cargo.comment}}</h5>
-                            </div>
+                    </div>
+                    <div class="tab-pane fade" id="comment{{cargo.id}}" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                        <div class="card-body">
+                            <h5>{{cargo.comment}}</h5>
                         </div>
                     </div>
                 </div>
             </div>
-            </br>
-        {% endfor %}
+        </div>
+        </br>
+    {% endfor %}
+{% endblock content %}
 
-        <footer style="margin-top: auto">
-            <section class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-6">
-                            <h4>Информация</h4>
-                            <ul class="list-unstyled">
-                                <li>ООО "БСКА-УРАЛ"</li>
-                            </ul>
-                        </div>
-    
-                        <div class="col-6">
-                            <h4>Контакты</h4>
-                            <ul class="list-unstyled">
-                                <li>Email: Bska-ural@yandex.ru</li>
-                                <li>Номер телефона: +79991259178</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </footer>
-    </div>
-        <script src= {% static "bootstrap5/js/bootstrap.bundle.min.js" %}></script>
-    </body>
-</html>
+{% block javascript %}
+
+{% endblock javascript %}

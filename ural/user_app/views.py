@@ -52,7 +52,7 @@ def registration(request):
             messages.error(request, 'Имя может состоять только из цифр и букв')
             return redirect('user_app:registration')
 
-        user = User.objects.create_user(name, email, password1)
+        user = User.objects.create_user(name=name, email=email, password=password1)
         
         # user.is_active = False
         user.save()
@@ -89,8 +89,14 @@ def registration(request):
     return render(request, 'registration.html')
 
 def profile(request):
-    print(request.user)
     return render(request, 'profile.html')
 
 def editProfile(request):
+    if request.POST:
+        request.user.name = request.POST['name']
+        request.user.email = request.POST['email']
+        request.user.about_me = request.POST['aboutMe']
+        request.user.save()
+        return redirect('user_app:profile')
+    
     return render(request, 'editProfile.html')
