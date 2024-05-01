@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Изменение профиля{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block content %}
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <form class = 'card p-5' action= "{% url "user_app:edit_profile" %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+            <label for="exampleInputName" class="form-label">Имя</label>
+            <input type="text" name='name' value="{{user.name}}" class="form-control" id="exampleInputName">
+            </div>
+            <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">Адрес электронной почты</label>
+            <input type="email" value="{{user.email}}" name='email' class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="aboutMe" class="form-label">Обо мне</label>
+                <textarea class="form-control" id="aboutMe" name="aboutMe" rows="5">{{user.about_me}}</textarea>
+            </div>
+            <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Изменить</button>
+        </form>
+    </div>
+{% endblock content %}
+    
+{% block javascript %}
+
+{% endblock javascript %}
