@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Cargo, Car, typeBody, typeLoading, carTypeBody, carTypeLoading
+from django.core.paginator import Paginator
 
 def addCargo(request):
     if request.POST:
@@ -65,20 +66,12 @@ def addCar(request):
     return render(request, 'addCar.html')
 
 def viewCargo(request):
-    cargs = Cargo.objects.all().select_related('user_id')
-    
-    # for i in cargo:
-    #     print(i.name, i.user_id.name, i.user_id.email, i.length, i.width, i.height, i.weight, i.volume, i.count_place,
-    #           i.loading_data, i.unloading_data, i.phone, i.loading_place, i.unloading_place, i.bcash, i.bcashless,
-    #             i.bcashless_nds, i.bcashless_without_nds, i.price_cash, i.price_cash_nds, i.price_cash_without_nds, i.request_price,
-    #             i.comment)
-        
-    for i in cargs:
-        print(i.price_cash)
+    cargs = Cargo.objects.all().select_related('user_id').order_by('id')
+    paginator = Paginator(cargs, per_page=4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
 
-    context = {
-        'cargs' : cargs
-    }
     return render(request, 'viewCargo.html', context=context)
 
 class VCar:
