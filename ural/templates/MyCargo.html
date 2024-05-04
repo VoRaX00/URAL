@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Грузы{% endblock title %}
+{% block title %}Мои грузы{% endblock title %}
 
 {% block css %}
-    {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
-        <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
+
 {% endblock css %}
+
 
 {% block content %}
     <br/>
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Откликнуться</button>
+                                <button type="submit" name="edit" id="edit" class="btn btn-dark" style="background-color: #217C6F;">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -123,6 +123,7 @@
         {% include 'pagination.html' %}
     </div> 
 {% endblock content %}
+
 
 {% block javascript %}
 

@@ -1,45 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}Грузы{% endblock title %}
+{% block title %}Мои грузы{% endblock title %}
 
 {% block css %}
-    {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
-        <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
+
 {% endblock css %}
+
 
 {% block content %}
     <br/>
-    {% for cargo in page_obj %}
+    {% for car in page_obj %}
         <div class="container" style="max-width: 32rem;">
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#general{{cargo.id}}" 
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#general{{car.id}}" 
                         type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Общее</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#parameter{{cargo.id}}" type="button" 
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#parameter{{car.id}}" type="button" 
                         role="tab" aria-controls="profile-tab-pane" aria-selected="false">Характеристики</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#comment{{cargo.id}}"
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#comment{{car.id}}"
                         type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Комментарий</button>
                         </li>
                     </ul>
                 </div>
 
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="general{{cargo.id}}" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane fade show active" id="general{{car.id}}" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                         <div class="card-body">
                             <div class="mb-3 row">
                                 <div class="col-4">
-                                    <h5>{{cargo.name}}</h5>
+                                    <h5>{{car.name}}</h5>
                                 </div>
                                 <div class="col-8">
-                                    <h6>Откуда: {{cargo.loading_place}}</h6>
-                                    <h6>Куда: {{cargo.unloading_place}}</h6>
-                                    <h6>Даты: {{cargo.loading_data}} - {{cargo.unloading_data}}</h6>
+                                    <h6>Откуда: {{car.where_from}}</h6>
+                                    <h6>Куда: {{car.where}}</h6>
+                                    <h6>Даты: {{car.ready_from}} - {{car.ready_to}}</h6>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -47,31 +47,42 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id='parameter{{cargo.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="tab-pane fade" id='parameter{{car.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                         <div class="card-body">
                             <div class="mb-3 row">
-                                <div class="col-6">
-                                    <h7>Длина: {{cargo.length}} м</h7>
+                                <div class="col-4">
+                                    <h7>Длина: {{car.length}} м</h7>
                                 </div>
-                                <div class="col-6">
-                                    <h7>Ширина: {{cargo.width}} м</h7>
+                                <div class="col-4">
+                                    <h7>Ширина: {{car.width}} м</h7>
                                 </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <div class="col-6">
-                                    <h7>Высота: {{cargo.height}} м</h7>
-                                </div>
-                                <div class="col-6">
-                                    <h7>Вес: {{cargo.weight}} кг</h7>
+                                <div class="col-4">
+                                    <h7>Высота: {{car.height}} м</h7>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <div class="col-6">
-                                    <h7>Объём: {{cargo.volume}} м</h7>
+                                    <h7>Грузоподъёмность, т: {{car.capacity}} кг</h7>
                                 </div>
                                 <div class="col-6">
-                                    <h7>Количество места: {{cargo.count_place}}</h7>
+                                    <h7>Объём, м³: {{car.volume}} м</h7>
                                 </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <h7>Тип кузова:</h7>
+                                <ul class="list-group">
+                                    {% for i in car.type_body %}
+                                        <li class="list-group-item">{{i}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="mb-3 row">
+                                <h7>Тип загрузки:</h7>
+                                <ul class="list-group">
+                                    {% for i in car.type_loading %}
+                                        <li class="list-group-item">{{i}}</li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                             {% if cargo.bcash %}
                                 <div class="mb-3 row">
@@ -109,20 +120,21 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="comment{{cargo.id}}" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                    <div class="tab-pane fade" id="comment{{car.id}}" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                         <div class="card-body">
-                            <h5>{{cargo.comment}}</h5>
+                            <h5>{{car.comment}}</h5>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>  
-        </br>
+        </div>
+    </br>
     {% endfor %}
     <div class="mb-3" style="margin:0 auto; margin-top: auto">
         {% include 'pagination.html' %}
     </div> 
 {% endblock content %}
+
 
 {% block javascript %}
 

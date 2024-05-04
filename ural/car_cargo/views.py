@@ -102,9 +102,6 @@ def viewCar(request):
     
     for i in all_cars:
         car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from, i.ready_to, i.phone, i.comment,)
-        # arr = [str(i.car), str(i.user.name), str(i.capacity), str(i.volume), str(i.length), 
-        #        str(i.width), str(i.height), str(i.where_from),
-        #        str(i.where), str(i.ready_from), str(i.ready_to), str(i.phone), str(i.comment)]
         
         typesBody = carTypeBody.objects.all().select_related('car', 'type_body')
         check = False
@@ -135,8 +132,19 @@ def viewCar(request):
         # print(car.type_loading)
         cars.append(car)
 
+    paginator = Paginator(cars, per_page=4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'cars': cars
+        'page_obj': cars
     }
     
     return render(request, 'viewCar.html', context=context)
+
+
+def myCar(request):
+    return render(request, 'MyCar.html')
+
+def myCargo(request):
+    return render(request, 'MyCargo.html')

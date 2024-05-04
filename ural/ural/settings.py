@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'main',
     'user_app',
     'car_cargo',
+    'notification',
 ]
 
 AUTH_USER_MODEL = 'user_app.User'

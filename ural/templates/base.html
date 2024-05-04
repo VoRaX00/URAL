@@ -22,23 +22,37 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg- top-menu">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url "main:index" %}">Главная страница</a>
+                    <a class="nav-link {% if 'main' in request.path %}active{% endif %}" href="{% url "main:index" %}">Главная страница</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
+                    <a class="nav-link {% if 'viewCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:viewCargo"%}">Найти груз</a>
+                    <a class="nav-link {% if 'viewCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:viewCargo"%}">Найти груз</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
+                    <a class="nav-link {% if 'addCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
+                    <a class="nav-link {% if 'addCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
+                  </li>
+                  <li>
+                    <a class="nav-link" href="#">Мои грузы</a>
+                  </li>
+                  <li>
+                    <a class="nav-link" href="#">Мои машины</a>
                   </li>
                 </ul>
                 <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    {% comment %} <li class="nav-item"> {% endcomment %}
+                  <div class="dropdown">
+                    <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src={% static '/style/icons/notification.svg'%} style="max-width: 30px; max-height: 30px;">
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Все уведомления</a></li>
+                    </ul>
+                  </div>  
+
                     <div class="dropdown">
                         <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
@@ -53,6 +67,8 @@
                             {% endif %}
                         </ul>
                     </div>
+
+                    
                 </ui>
               </div>
             </div>

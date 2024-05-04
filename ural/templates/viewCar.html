@@ -9,7 +9,7 @@
         <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
 {% block content %}
     <br/>
-        {% for car in cars %}
+        {% for car in page_obj %}
             <div class="container" style="max-width: 32rem;">
                 <div class="card">
                     <div class="card-header">
@@ -130,6 +130,9 @@
             </div>
         </br>
     {% endfor %}
+    <div class="mb-3" style="margin:0 auto; margin-top: auto">
+        {% include 'pagination.html' %}
+    </div> 
 {% endblock content %}
 
 {% block javascript %}
