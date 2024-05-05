@@ -3,7 +3,7 @@
 {% block title %}Мои грузы{% endblock title %}
 
 {% block css %}
-
+    <link href="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet">
 {% endblock css %}
 
 
@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <button type="submit" name="edit" id="edit" class="btn btn-dark" style="background-color: #217C6F;">Редактировать</button>
+                                <button type="submit" name="edit" data-bs-toggle="modal" data-bs-target="#editModal{{cargo.id}}" id="edit" class="btn btn-dark" style="background-color: #217C6F;">Редактировать</button>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,6 @@
                                 <div class="mb-3 row">
                                     <div class="col-6">
                                         <h7>Оплата: безналичная</h7>
-
                                     </div>
                                     <div class="col-6">
                                         {% if cargo.bcashless_nds %}
@@ -118,13 +117,159 @@
             </div>
         </div>  
         </br>
+        <div class="modal fade" id="editModal{{cargo.id}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Редактирование груза</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body mb-3">
+                        <form class = 'card p-5' action="{% url "car_cargo:myCargo" %}" style="max-width: 800px" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="cargoName">Наименование груза:</label>
+                                <input type="text" class="form-control" id="cargoName" name="cargoName" value="{{cargo.name}}">
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col">
+                                    <label for="length">Длина (м):</label>
+                                    <input type="number" class="form-control" id="length" name="length" min="0" value="{{cargo.length}}" style="max-width: 100px">
+                                </div>
+                                <div class="col">
+                                    <label for="width">Ширина (м):</label>
+                                    <input type="number" class="form-control" id="width" name="width" min="0" value="{{cargo.width}}" style="max-width: 100px">
+                                </div>
+                                <div class="col">
+                                    <label for="height">Высота (м):</label>
+                                    <input type="number" class="form-control" id="height" name="height" min="0" value="{{cargo.height}}" style="max-width: 100px">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-auto">
+                                    <label for="cargoWeight">Вес груза (т):</label>
+                                    <input type="number" class="form-control" id="cargoWeight" name="cargoWeight" min="0" value="{{cargo.weight}}" style="max-width: 100px">
+                                </div>
+                                <div class="col-auto">
+                                    <label for="volume">Объем (м^3):</label>
+                                    <input type="number" class="form-control" id="volume" name="volume" min="0" value="{{cargo.volume}}" style="max-width: 100px">
+                                </div>
+                                <div class="col-auto">
+                                    <label for="countPlace">Кол-во мест (расчет в европалеттах):</label>
+                                    <input type="number" class="form-control" id="countPlace" name="countPlace" min="0" value="{{cargo.count_place}}" style="max-width: 100px">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-auto">
+                                    <label for="loadingDate">Дата загрузки:</label>
+                                    <input type="date" class="form-control" id="loadingDate" value="{{cargo.loading_data}}" name="loadingDate">
+                                </div>
+                                <div class="col-auto">
+                                    <label for="unloadingDate">Дата разгрузки:</label>
+                                    <input type="date" class="form-control" id="unloadingDate" value="{{cargo.unloading_data}}" name="unloadingDate">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone">Телефон:</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" value="{{cargo.phone}}" style="max-width: 200px">
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-auto">
+                                    <label for="loading_address">Адрес загрузки:</label>
+                                    <input id="loading_address" name="loading_address" type="text" value="{{cargo.loading_place}}" class="form-control"/>
+                                </div>
+                            
+                                <div class="col-auto">
+                                    <label for="unloading_address">Адрес разгрузки:</label>
+                                    <input type="text" class="form-control" id="unloading_address" value="{{cargo.unloading_place}}" name="unloading_address"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div>
+                                    <label for="deliveryCost">Способ оплаты:</label>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-auto">
+                                    <input class="form-check-input" type="checkbox" name="cash" id="cboxCash" value="cash" {% if cargo.bcash == True %}checked{% endif %}>
+                                    <label class="form-check-label" for="cboxCash">Наличные</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input class="form-check-input" type="checkbox" name="cash" id="cboxCashless" value="cashless" {% if cargo.bcashless == True %}checked{% endif %}>
+                                    <label class="form-check-label" for="cboxCashless">Безналичный расчет</label>
+                                </div>
+                                <div class="col-auto" id="extra_checkbox">
+                                    <div class="mb-3">
+                                        <input class="form-check-input" type="checkbox" name="cashless" id="nds" value="nds" {% if cargo.bcashless_nds == True %}checked{% endif %}>
+                                        <label class="form-check-label" for="nds">НДС</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input class="form-check-input" type="checkbox" name="cashless" id="without_nds" value="without_nds" {% if cargo.bcashless_without_nds == True %}checked{% endif %}>
+                                        <label class="form-check-label" for="without_nds">Без НДС</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-8">
+                                    <div class="mb-3 row" id="price_cash_checkbox">
+                                        <div class="col-4">
+                                            <label for="deliveryCostCash">Наличными</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="number" placeholder="Наличными" class="form-control" value="{{cargo.price_cash}}" id="deliveryCostCash" name="deliveryCostCash" min="1" style="max-width: 300px">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row" id="price_cashless_nds">
+                                        <div class="col-4">
+                                            <label for="deliveryCostNDS">С НДС</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="number" placeholder="С НДС" class="form-control" id="deliveryCostNDS" name="deliveryCostNDS" min="1" value="{{cargo.price_cash_nds}}" style="max-width: 300px">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                        <div class="col-4">
+                                            <label for="deliveryCostWithoutNDS">Без НДС</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="number" placeholder="Без НДС" class="form-control" value="{{cargo.price_cash_without_nds}}" id="deliveryCostWithoutNDS" name="deliveryCostWithoutNDS" min="1" style="max-width: 300px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex align-items-center justify-content-center">
+                                    <div class="col-2">
+                                        <input class="form-check-input" name="request_price" type="checkbox" id="requestPrice" value="request" {% if cargo.request_price == True %}checked{% endif %}/>
+                                    </div>
+                                    <div class="col-10">
+                                        <label class="form-check-label" for="requestPrice">Запрос цены</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Комментарий:</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="5">{{cargo.comment}}</textarea>
+                            </div>     
+
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
+
+    
+
     <div class="mb-3" style="margin:0 auto; margin-top: auto">
         {% include 'pagination.html' %}
-    </div> 
+    </div>
 {% endblock content %}
 
 
 {% block javascript %}
-
+    {% load static %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
+    <script src={% static 'style/js/autocompleteAddress.js'%}></script>
 {% endblock javascript %}

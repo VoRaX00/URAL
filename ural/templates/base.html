@@ -37,11 +37,11 @@
                     <a class="nav-link {% if 'addCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
                   </li>
                   <li>
-                    <a class="nav-link" href="#">Мои грузы</a>
+                    <a class="nav-link {% if 'myCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:myCar" %}">Мои машины</a>
                   </li>
                   <li>
-                    <a class="nav-link" href="#">Мои машины</a>
-                  </li>
+                    <a class="nav-link {% if 'myCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:myCargo" %}">Мои грузы</a>
+                  </li> 
                 </ul>
                 <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
                   <div class="dropdown">
@@ -66,9 +66,7 @@
                                 <li><a class="dropdown-item" href="{% url "user_app:registration" %}">Регистрация</a></li>
                             {% endif %}
                         </ul>
-                    </div>
-
-                    
+                    </div>  
                 </ui>
               </div>
             </div>

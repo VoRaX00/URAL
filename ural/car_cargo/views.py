@@ -25,7 +25,6 @@ def addCargo(request):
             request_price = True
 
         id = request.user.id
-        print(request.POST['deliveryCostCash'])
         cargo = Cargo(name = request.POST['cargoName'], 
             length = request.POST['length'], width = request.POST['width'], height = request.POST['height'],
             weight = request.POST['cargoWeight'], volume = request.POST['volume'], count_place = request.POST['countPlace'],
@@ -52,21 +51,19 @@ def addCar(request):
         typesBody = request.POST.getlist('bodyType')
         for i in typesBody:
             type_body_instance = typeBody.objects.get(name=i)
-            print(type_body_instance)
             car_type_body = carTypeBody(car=car, type_body=type_body_instance)
             car_type_body.save()
 
         typesLoading = request.POST.getlist('loadingType')
         for i in typesLoading:
             type_loading_instance = typeLoading.objects.get(name=i)
-            print(type_loading_instance)
             car_type_loading = carTypeLoading(car=car, type_loading=type_loading_instance)
             car_type_loading.save()
         
     return render(request, 'addCar.html')
 
 def viewCargo(request):
-    cargs = Cargo.objects.all().select_related('user_id').order_by('id')
+    cargs = Cargo.objects.all().select_related('user_id').order_by('-id')
     paginator = Paginator(cargs, per_page=4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -96,8 +93,8 @@ class VCar:
 
 
 def viewCar(request):
-    cars = carTypeBody.objects.all().select_related('car__user', 'type_body')
-    all_cars = Car.objects.all().select_related('user')
+    #cars = carTypeBody.objects.all().select_related('car__user', 'type_body').order_by('-id')
+    all_cars = Car.objects.all().select_related('user').order_by('-id')
     cars = []
     
     for i in all_cars:
@@ -116,7 +113,7 @@ def viewCar(request):
                 break
                 
             j+=1
-        print(car.type_body)
+
         check = False
         typesLoading = carTypeLoading.objects.all().select_related('car', 'type_loading')
         while k < len(typesLoading):
@@ -128,8 +125,6 @@ def viewCar(request):
                 
             k+=1
 
-        # print(car, car.type_body)
-        # print(car.type_loading)
         cars.append(car)
 
     paginator = Paginator(cars, per_page=4)
@@ -137,14 +132,83 @@ def viewCar(request):
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'page_obj': cars
+        'page_obj': page_obj
     }
     
     return render(request, 'viewCar.html', context=context)
 
 
 def myCar(request):
-    return render(request, 'MyCar.html')
+    #cars = carTypeBody.objects.all().select_related('car__user', 'type_body').order_by('-id')
+    if request.POST:
+        #car = Car.objects.get(id=)
+        car = Car(car=request.POST['car'],capacity = request.POST['capacity'], volume = request.POST['volume'], 
+                length = request.POST['length'], width = request.POST['width'], height = request.POST['height'], 
+                where_from=request.POST['place_from'], where=request.POST['place_to'], ready_to = request.POST['readyTo'],
+                ready_from = request.POST['readyFrom'], phone = request.POST['phone'], comment = request.POST['comment'], user_id=id)
+        #car.save()
+
+        
+        typesBody = request.POST.getlist('bodyType')
+        for i in typesBody:
+            type_body_instance = typeBody.objects.get(name=i)
+            car_type_body = carTypeBody(car=car, type_body=type_body_instance)
+            #car_type_body.save()
+
+        typesLoading = request.POST.getlist('loadingType')
+        for i in typesLoading:
+            type_loading_instance = typeLoading.objects.get(name=i)
+            car_type_loading = carTypeLoading(car=car, type_loading=type_loading_instance)
+            #car_type_loading.save()
+
+    all_cars = Car.objects.all().select_related('user').filter(user_id=request.user).order_by('-id')
+    cars = []
+    
+    for i in all_cars:
+        car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from, i.ready_to, i.phone, i.comment,)
+        
+        typesBody = carTypeBody.objects.all().select_related('car', 'type_body')
+        check = False
+        j=0
+        k=0
+        while j < len(typesBody):
+            if typesBody[j].car.id == i.id:
+                #print(typesBody[j].type_body.name)
+                car.type_body.append(typesBody[j].type_body.name)
+                check = True
+            elif check:
+                break
+                
+            j+=1
+
+        check = False
+        typesLoading = carTypeLoading.objects.all().select_related('car', 'type_loading')
+        while k < len(typesLoading):
+            if typesLoading[k].car.id == i.id:
+                car.type_loading.append(typesLoading[k].type_loading.name)
+                check=True
+            elif check:
+                break
+                
+            k+=1
+
+        cars.append(car)
+
+    paginator = Paginator(cars, per_page=4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj
+    }
+
+    return render(request, 'MyCar.html', context=context)
 
 def myCargo(request):
-    return render(request, 'MyCargo.html')
+    cargs = Cargo.objects.all().select_related('user_id').filter(user_id=request.user).order_by('-id')
+    paginator = Paginator(cargs, per_page=4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
+
+    return render(request, 'MyCargo.html', context=context)
