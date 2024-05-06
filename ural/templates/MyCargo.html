@@ -127,6 +127,7 @@
                     <div class="modal-body mb-3">
                         <form class = 'card p-5' action="{% url "car_cargo:myCargo" %}" style="max-width: 800px" method="post">
                             {% csrf_token %}
+                            <input type="hidden" id="cargo_id" name="cargo_id" value="{{cargo.id}}">
                             <div class="mb-3">
                                 <label for="cargoName">Наименование груза:</label>
                                 <input type="text" class="form-control" id="cargoName" name="cargoName" value="{{cargo.name}}">
