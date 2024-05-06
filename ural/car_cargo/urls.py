@@ -8,5 +8,7 @@ urlpatterns = [
     path('addCargo/', views.addCargo, name='addCargo'),
     path('addCar/', views.addCar, name='addCar'),
     path('viewCargo/',views.viewCargo, name='viewCargo'),
-    path('viewCar/', views.viewCar, name='viewCar')
+    path('viewCar/', views.viewCar, name='viewCar'),
+    path('myCargo/', views.myCargo, name='myCargo'),
+    path('myCar/', views.myCar, name='myCar'),
 ]

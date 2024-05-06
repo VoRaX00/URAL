@@ -9,7 +9,7 @@
 
 {% block content %}
     <br/>
-    {% for cargo in cargs %}
+    {% for cargo in page_obj %}
         <div class="container" style="max-width: 32rem;">
             <div class="card">
                 <div class="card-header">
@@ -41,6 +41,9 @@
                                     <h6>Куда: {{cargo.unloading_place}}</h6>
                                     <h6>Даты: {{cargo.loading_data}} - {{cargo.unloading_data}}</h6>
                                 </div>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Откликнуться</button>
                             </div>
                         </div>
                     </div>
@@ -113,9 +116,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
         </br>
     {% endfor %}
+    <div class="mb-3" style="margin:0 auto; margin-top: auto">
+        {% include 'pagination.html' %}
+    </div> 
 {% endblock content %}
 
 {% block javascript %}
