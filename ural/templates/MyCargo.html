@@ -42,9 +42,9 @@
                                     <h6>Даты: {{cargo.loading_data}} - {{cargo.unloading_data}}</h6>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            {% comment %} <div class="mb-3">
                                 <button type="submit" name="edit" data-bs-toggle="modal" data-bs-target="#editModal{{cargo.id}}" id="edit" class="btn btn-dark" style="background-color: #217C6F;">Редактировать</button>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id='parameter{{cargo.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
