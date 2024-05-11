@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <form action="{% url 'notification:sendCar' %}" method="post">
+                                    <form action="{% url 'car_cargo:sendCar' %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" id="cargo_id" name="car_id" value="{{car.id}}">
                                         <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Откликнуться</button>

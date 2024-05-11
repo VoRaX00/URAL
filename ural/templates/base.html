@@ -49,14 +49,11 @@
                         <img src={% static '/style/icons/notification.svg'%} style="max-width: 30px; max-height: 30px;">
                     </a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Все уведомления</a></li>
-                    </ul>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Совместные отклики</a></li>
+                      <li><a class="dropdown-item" href="{% url "notification:myNotifications" %}">Мои уведомления</a></li>
+                      <li><a class="dropdown-item" href="{% url "notification:myResponses" %}">Мои отклики</a></li>
                     </ul>
                   </div>  
-
-                    <div class="dropdown">
+                  <div class="dropdown">
                         <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
                         </a>
