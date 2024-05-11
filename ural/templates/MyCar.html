@@ -43,9 +43,9 @@
                                     <h6>Даты: {{car.ready_from}} - {{car.ready_to}}</h6>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            {% comment %} <div class="mb-3">
                                 <button type="submit" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editModal{{car.id}}" style="background-color: #217C6F;">Редактировать</button>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id='parameter{{car.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
@@ -106,6 +106,7 @@
                     <div class="modal-body mb-3">
                         <form class = 'card p-5' action="{% url "car_cargo:myCar" %}"  method="post">
                             {% csrf_token %}
+                            <input type="hidden" id="car_id" name="car_id" value="{{car.id}}">
                             <div class="mb-3">
                                 <label for="car">Автомобиль</label>
                                 <input type="text" name="car" id="car" value="{{car.name}}" class="form-control">

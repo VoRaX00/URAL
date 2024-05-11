@@ -5,5 +5,6 @@ from notification import views
 app_name = 'notification'
 
 urlpatterns = [
-    path('notification/', views.allNotification, name='notification'),
+    path('MyNotification/', views.my_notification, name='myNotifications'),
+    path('MyResponses/', views.my_responses, name='myResponses'),
 ]

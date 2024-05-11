@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from django.http import HttpResponseForbidden
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Cargo, Car, typeBody, typeLoading, carTypeBody, carTypeLoading
 from django.core.paginator import Paginator
+from notification.models import notifyCar, notifyCargo
 
 def addCargo(request):
     if request.POST:
@@ -24,7 +27,6 @@ def addCargo(request):
         if len(arrCash) != 0:
             request_price = True
 
-        id = request.user.id
         cargo = Cargo(name = request.POST['cargoName'], 
             length = request.POST['length'], width = request.POST['width'], height = request.POST['height'],
             weight = request.POST['cargoWeight'], volume = request.POST['volume'], count_place = request.POST['countPlace'],
@@ -141,14 +143,27 @@ def viewCar(request):
 def myCar(request):
     #cars = carTypeBody.objects.all().select_related('car__user', 'type_body').order_by('-id')
     if request.POST:
-        #car = Car.objects.get(id=)
-        car = Car(car=request.POST['car'],capacity = request.POST['capacity'], volume = request.POST['volume'], 
-                length = request.POST['length'], width = request.POST['width'], height = request.POST['height'], 
-                where_from=request.POST['place_from'], where=request.POST['place_to'], ready_to = request.POST['readyTo'],
-                ready_from = request.POST['readyFrom'], phone = request.POST['phone'], comment = request.POST['comment'], user_id=id)
+        csrf_token = request.POST.get('csrfmiddlewaretoken')
+        if not csrf_token == request.COOKIES.get('csrfmiddlewaretoken'):
+            return HttpResponseForbidden("CSRF Token не действителен.")
+        
+        car_id = request.POST['car_id']
+        car = Car.objects.get(id=car_id)
+        car.car = request.POST['car']
+        car.capacity = request.POST['capacity']
+        car.volume = request.POST['volume']
+        car.length = request.POST['length']
+        car.width = request.POST['width']
+        car.height = request.POST['height']
+        car.where_from=request.POST['place_from']
+        car.where=request.POST['place_to']
+        car.ready_to = request.POST['readyTo']
+        car.ready_from = request.POST['readyFrom']
+        car.phone = request.POST['phone']
+        car.comment = request.POST['comment']
         #car.save()
 
-        
+        #дописать удаление всех типов кузова и потом добавление новых типов кузова
         typesBody = request.POST.getlist('bodyType')
         for i in typesBody:
             type_body_instance = typeBody.objects.get(name=i)
@@ -205,6 +220,51 @@ def myCar(request):
     return render(request, 'MyCar.html', context=context)
 
 def myCargo(request):
+    if request.POST:
+
+        cargo_id = request.POST['cargo_id']
+        
+        try:
+            cargo = Cargo.objects.get(id=cargo_id)
+            if cargo.user_id != request.user:
+                return HttpResponseForbidden("у вас нет прав")
+
+            arrCash = request.POST.getlist('cash')
+            if 'cash' in arrCash:
+                cargo.bcash = True
+            if 'cashless' in arrCash:
+                cargo.bcashless = True
+                arrCash = request.POST.getlist('cashless')
+                if 'nds' in arrCash:
+                    cargo.bcashless_nds=True
+                if 'without_nds' in arrCash:
+                    cargo.bcashless_without_nds=True
+            
+            arrCash = request.POST.getlist('request_price')
+            if len(arrCash) != 0:
+                cargo.request_price = True
+
+            cargo.name = request.POST['cargoName']
+            cargo.length = request.POST['length']
+            cargo.width = request.POST['width']
+            cargo.height = request.POST['height']
+            cargo.weight = request.POST['cargoWeight']
+            cargo.volume = request.POST['volume']
+            cargo.count_place = request.POST['countPlace']
+            cargo.loading_data = request.POST['loadingDate']
+            cargo.unloading_data = request.POST['unloadingDate']
+            cargo.phone = request.POST['phone']
+            cargo.loading_place = request.POST['loading_address']
+            cargo.unloading_place = request.POST['unloading_address']
+            cargo.price_cash=request.POST['deliveryCostCash']
+            cargo.price_cash_nds = request.POST['deliveryCostNDS']
+            cargo.price_cash_without_nds = request.POST['deliveryCostWithoutNDS']
+            cargo.comment = request.POST['comment']
+        
+            cargo.save()
+        except ObjectDoesNotExist:
+            return HttpResponseForbidden("груза с таким id не существует")
+
     cargs = Cargo.objects.all().select_related('user_id').filter(user_id=request.user).order_by('-id')
     paginator = Paginator(cargs, per_page=4)
     page_number = request.GET.get('page')
@@ -212,3 +272,21 @@ def myCargo(request):
     context = {'page_obj': page_obj}
 
     return render(request, 'MyCargo.html', context=context)
+
+def send_notification_cargo(request):
+    if request.POST:
+        cargo = Cargo.objects.get(id=request.POST['cargo_id'])
+        if request.user == cargo.user_id:
+            return render(request, 'viewCargo.html')
+        notify = notifyCargo(cargo=cargo, first_user=request.user, second_user=cargo.user_id)
+        notify.save()
+    return viewCargo(request)
+
+def send_notification_car(request):
+    if request.POST:
+        car = Car.objects.get(id=request.POST['car.id'])
+        if request.user == car.user:
+            return render(request, 'viewCar.html')
+        notify = notifyCar(car=car, first_user=request.user, second_user=car.user)
+        notify.save()
+    return viewCar(request)
