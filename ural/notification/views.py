@@ -5,10 +5,11 @@ from car_cargo.views import VCar
 from django.core.paginator import Paginator
 
 class ObjectNotify:
-    def __init__(self, id, cargo=None, car=None):
+    def __init__(self, id, cargo=None, car=None, isCar=False):
         self.cargo = cargo
         self.car = car
         self.id = id
+        self.isCar = isCar
     
 
 def objectsNotify(cargs, cars):
@@ -25,11 +26,11 @@ def objectsNotify(cargs, cars):
 
     if i < len(cargs):
         while i < len(cargs):
-            objects.append(ObjectNotify(id=cargs[i], cargo=cargs[i]))
+            objects.append(ObjectNotify(id=cargs[i].id, cargo=cargs[i]))
             i+=1
     else:
         while j < len(cars):
-            objects.append(ObjectNotify(id=cars[j], car=cars[j]))
+            objects.append(ObjectNotify(id=cars[j], car=cars[j], isCar=True))
             j+=1
     return objects
 
@@ -77,13 +78,13 @@ def my_notification(request):
     cargs = arrayCargs(notifications_cargo)
     cars = arrayCars(notifications_car)
     objects = objectsNotify(cargs, cars)
-    
+
     paginator = Paginator(objects, per_page=4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'objects' : page_obj
+        'page_obj' : page_obj
     }
     return render(request, 'MyNotification.html', context=context)
 
@@ -94,13 +95,13 @@ def my_responses(request):
     cargs = arrayCargs(notifications_cargo)
     cars = arrayCars(notifications_car)
     objects = objectsNotify(cargs, cars)
-    
+
     paginator = Paginator(objects, per_page=4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'objects' : page_obj
+        'page_obj' : page_obj
     }
 
     return render(request, 'MyResponses.html', context=context)
