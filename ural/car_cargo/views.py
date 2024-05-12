@@ -140,6 +140,8 @@ def viewCar(request):
     return render(request, 'viewCar.html', context=context)
 
 
+
+
 def myCar(request):
     #cars = carTypeBody.objects.all().select_related('car__user', 'type_body').order_by('-id')
     if request.POST:
