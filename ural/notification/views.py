@@ -3,14 +3,14 @@ from .models import notifyCargo, notifyCar
 from car_cargo.models import Cargo, carTypeBody, carTypeLoading
 from car_cargo.views import VCar
 from django.core.paginator import Paginator
+from django.db.models import Q
 
+# класс объекта уведомления
 class ObjectNotify:
-    def __init__(self, id, cargo=None, car=None, isCar=False):
+    def __init__(self, id, cargo=None, car=None):
         self.cargo = cargo
         self.car = car
         self.id = id
-        self.isCar = isCar
-    
 
 def objectsNotify(cargs, cars):
     objects=[]
@@ -30,7 +30,7 @@ def objectsNotify(cargs, cars):
             i+=1
     else:
         while j < len(cars):
-            objects.append(ObjectNotify(id=cars[j], car=cars[j], isCar=True))
+            objects.append(ObjectNotify(id=cars[j], car=cars[j]))
             j+=1
     return objects
 
@@ -70,38 +70,45 @@ def arrayCargs(cargs):
         cargo = Cargo.objects.get(id = i.cargo.id)
         array.append(cargo)
     return array
+
+
+def getObjects(notifications_cargo, notifications_car):
+    return objectsNotify(arrayCargs(notifications_cargo), arrayCars(notifications_car))
+
+# функция которая возврщает словарб являющийся контекстом для страницы
+def getContext(notifications_cargo, notifications_car, request):
+    objects = getObjects(notifications_cargo, notifications_car)
+
+    paginator = Paginator(objects, per_page=4)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj
+    }
+    return context
         
+# функция которая передаст все мои уведомления на сайт
 def my_notification(request):
     notifications_cargo = notifyCargo.objects.all().filter(second_user=request.user).order_by("-id")
     notifications_car = notifyCar.objects.all().filter(second_user=request.user).order_by("-id")
 
-    cargs = arrayCargs(notifications_cargo)
-    cars = arrayCars(notifications_car)
-    objects = objectsNotify(cargs, cars)
-
-    paginator = Paginator(objects, per_page=4)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'page_obj' : page_obj
-    }
+    context = getContext(notifications_cargo, notifications_car, request)
     return render(request, 'MyNotification.html', context=context)
 
+# функция которая передаст все мои отклики на сайт
 def my_responses(request):
     notifications_cargo = notifyCargo.objects.all().filter(first_user=request.user).order_by("-id")
     notifications_car = notifyCar.objects.all().filter(first_user=request.user).order_by("-id")
     
-    cargs = arrayCargs(notifications_cargo)
-    cars = arrayCars(notifications_car)
-    objects = objectsNotify(cargs, cars)
-
-    paginator = Paginator(objects, per_page=4)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'page_obj' : page_obj
-    }
-
+    context = getContext(notifications_cargo, notifications_car, request)
     return render(request, 'MyResponses.html', context=context)
+
+def match(request):
+    # достали все метчи
+    notifications_cargo = notifyCargo.objects.all().filter(Q(first_user=request.user) | Q(second_user=request.user)).filter(status_first_user='y').filter(status_second_user='y')
+    notifications_car = notifyCar.objects.all().filter(Q(first_user=request.user) | Q(second_user=request.user)).filter(status_first_user='y').filter(status_second_user='y')
+    
+    # получили контекст
+    context = getContext(notifications_cargo, notifications_car, request)
+    return render(request, 'Match.html', context=context)

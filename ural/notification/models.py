@@ -37,3 +37,15 @@ class notifyCar(models.Model):
 
     class Meta:
         db_table='notify_car'
+
+
+# class matchCargo(models.Model):
+#     first_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_user_cargo_match')
+#     second_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_user_cargo_match')
+
+#     cargo = models.ForeignKey(Cargo, null=False, on_delete=models.CASCADE)
+
+# class matchCar(models.Model):
+#     first_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_user_car_match')
+#     second_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_user_car_match')
+
