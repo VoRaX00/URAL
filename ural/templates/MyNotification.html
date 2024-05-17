@@ -45,8 +45,11 @@
                                 <div class="mb-3">
                                     <form action="{% url 'notification:myNotifications' %}" method="post">
                                         {% csrf_token %}
-                                        <input type="hidden" id="obj_car_id" name="obj_car_id" value="{{ obj.id }}">
-                                        <button type="submit" name="delete" id="edit" class="btn btn-dark" style="background-color: #DC143C;">Удалить</button>
+                                        <input type="hidden" id="obj_car_accept_id" name="obj_car_accept_id" value="{{ obj.id }}">
+                                        <button type="submit" name="accept" id="accept" class="btn btn-dark" style="background-color: #217C6F;">Принять</button>
+                                    
+                                        <input type="hidden" id="obj_car_reject_id" name="obj_car_reject_id" value="{{ obj.id }}">
+                                        <button type="submit" name="reject" id="reject" class="btn btn-dark" style="background-color: #DC143C;">Отклонить</button>
                                     </form>
                                 </div>
                             </div>
@@ -134,8 +137,11 @@
                                 <div class="mb-3">
                                     <form action="{% url 'notification:myNotifications' %}" method="post">
                                         {% csrf_token %}
-                                        <input type="hidden" id="obj_cargo_id" name="obj_cargo_id" value="{{ obj.id }}">
-                                        <button type="submit" name="delete" id="edit" class="btn btn-dark" style="background-color: #DC143C;">Удалить</button>
+                                        <input type="hidden" id="obj_cargo_accept_id" name="obj_cargo_accept_id" value="{{ obj.id }}">
+                                        <button type="submit" name="accept" id="accept" class="btn btn-dark" style="background-color: #217C6F;">Принять</button>
+                                        
+                                        <input type="hidden" id="obj_cargo_reject_id" name="obj_cargo_reject_id" value="{{ obj.id }}">
+                                        <button type="submit" name="reject" id="reject" class="btn btn-dark" style="background-color: #DC143C;">Отклонить</button>
                                     </form>
                                 </div>
                             </div>
