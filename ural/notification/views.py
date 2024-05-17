@@ -90,14 +90,46 @@ def getContext(notifications_cargo, notifications_car, request):
         
 # функция которая передаст все мои уведомления на сайт
 def my_notification(request):
-    notifications_cargo = notifyCargo.objects.all().filter(second_user=request.user).order_by("-id")
-    notifications_car = notifyCar.objects.all().filter(second_user=request.user).order_by("-id")
+    if request.POST:
+        if request.POST.get('obj_car_accept_id'):
+            obj_id = request.POST.get('obj_car_accept_id')
+            obj = notifyCar.objects.get(id=obj_id)
+            obj.status_second_user = 'y'
+            obj.save()
+        elif request.POST.get('obj_car_reject_id'):
+            obj_id = request.POST.get('obj_car_reject_id')
+            obj = notifyCar.objects.get(id=obj_id)
+            obj.status_second_user = 'n'
+            obj.save()
+        elif request.POST.get('obj_cargo_accept_id'):
+            obj_id = request.POST.get('obj_cargo_accept_id')
+            obj = notifyCargo.objects.get(id=obj_id)
+            obj.status_second_user = 'y'
+            obj.save()
+        elif request.POST.get('obj_cargo_reject_id'):
+            obj_id = request.POST.get('obj_cargo_reject_id')
+            obj = notifyCargo.objects.get(id=obj_id)
+            obj.status_second_user = 'n'
+            obj.save()
+
+    notifications_cargo = notifyCargo.objects.all().filter(second_user=request.user).filter(status_second_user='u').order_by("-id")
+    notifications_car = notifyCar.objects.all().filter(second_user=request.user).filter(status_second_user='u').order_by("-id")
 
     context = getContext(notifications_cargo, notifications_car, request)
     return render(request, 'MyNotification.html', context=context)
 
 # функция которая передаст все мои отклики на сайт
 def my_responses(request):
+    if request.POST: #удаление запроса
+        if request.POST.get('obj_cargo_id'):
+            obj_id = request.POST.get('obj_cargo_id')
+            obj = notifyCargo.objects.get(id=obj_id)
+            obj.delete()
+        else:
+            obj_id = request.POST.get('obj_cargo_id')
+            obj = notifyCar.objects.get(id=request.POST.get('obj_car_id'))
+            obj.delete()
+
     notifications_cargo = notifyCargo.objects.all().filter(first_user=request.user).order_by("-id")
     notifications_car = notifyCar.objects.all().filter(first_user=request.user).order_by("-id")
     
