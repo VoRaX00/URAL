@@ -46,7 +46,7 @@
                                         <h6>Даты: {{obj.car.ready_from}} - {{obj.car.ready_to}}</h6>
                                     </div>
                                 </div>
-                                <div class="mb-3">
+                                {% comment %} <div class="mb-3">
                                     <form action="{% url 'notification:myNotifications' %}" method="post">
                                         {% csrf_token %}
                                         <input type="hidden" id="obj_car_accept_id" name="obj_car_accept_id" value="{{ obj.id }}">
@@ -55,7 +55,7 @@
                                         <input type="hidden" id="obj_car_reject_id" name="obj_car_reject_id" value="{{ obj.id }}">
                                         <button type="submit" name="reject" id="reject" class="btn btn-dark" style="background-color: #DC143C;">Отклонить</button>
                                     </form>
-                                </div>
+                                </div> {% endcomment %}
                             </div>
                         </div>
                         <div class="tab-pane fade" id='parameterCar{{obj.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
@@ -156,7 +156,7 @@
                                         <h6>Даты: {{obj.cargo.loading_data}} - {{obj.cargo.unloading_data}}</h6>
                                     </div>
                                 </div>
-                                <div class="mb-3">
+                                {% comment %} <div class="mb-3">
                                     <div class="col-auto">
                                         <form action="{% url 'notification:myNotifications' %}" method="post">
                                             {% csrf_token %}
@@ -173,8 +173,8 @@
                                             {% csrf_token %}
                                             
                                         </form>
-                                    </div> {% endcomment %}
-                                </div>
+                                    </div>
+                                </div> {% endcomment %}
                             </div>
                         </div>
                         <div class="tab-pane fade" id='parameterCargo{{obj.id}}' role="tabpanel" aria-labelledby="profile-tab" tabindex="0">

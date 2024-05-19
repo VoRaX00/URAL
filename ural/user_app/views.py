@@ -8,17 +8,30 @@ from django.contrib import messages
 # from django.utils.http import urlsafe_base64_encode
 # from django.utils.encoding import force_bytes, force_text
 # from email.message import EmailMessage
-
-
 from . tokens import generate_token
 from ural import settings
+
+
+def checkingNameEmail(request, email, name):
+    if User.objects.filter(email=email):
+        messages.error(request, 'Аккаунт для указанной электронной почты уже существует')
+        return False
+    
+    if len(name) > 255:
+        messages.error(request, 'Имя слишком длинное')
+        return False
+    
+    if not name.isalnum():
+        messages.error(request, 'Имя может состоять только из цифр и букв')
+        return False
+    return True
 
 User = get_user_model()
 
 def login(request):
     if request.POST:
-        email = request.POST['email']
-        password = request.POST['password']
+        email = request.POST.get('email')
+        password = request.POST.get('password')
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
@@ -27,6 +40,7 @@ def login(request):
         else:
             messages.error(request, "Bad credentials")
             return render(request, 'index.html')
+
     return render(request, 'login.html')
 
 def logout(request):
@@ -34,22 +48,18 @@ def logout(request):
     messages.success(request, "Logged")
     return redirect('main:index')
 
-
 def registration(request):
     if request.POST:
-        name = request.POST['name']
-        email = request.POST['email']
-        password1 = request.POST['password1']
-        
-        if User.objects.filter(email=email):
-            messages.error(request, 'Аккаунт для указанной электронной почты уже существует')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        if not checkingNameEmail(request, email, name):
             return redirect('user_app:registration')
 
-        if len(name) > 255:
-            messages.error(request, 'Имя слишком длинное')
-
-        if not name.isalnum():
-            messages.error(request, 'Имя может состоять только из цифр и букв')
+        if password1 != password2:
+            messages.error(request, 'Пароли не совпадают')
             return redirect('user_app:registration')
 
         user = User.objects.create_user(name=name, email=email, password=password1)
@@ -93,9 +103,14 @@ def profile(request):
 
 def editProfile(request):
     if request.POST:
-        request.user.name = request.POST['name']
-        request.user.email = request.POST['email']
-        request.user.about_me = request.POST['aboutMe']
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        if not checkingNameEmail(request, email, name):
+            return redirect('user_app:registration')
+
+        request.user.name = name
+        request.user.email = email
+        request.user.about_me = request.POST.get('aboutMe')
         request.user.save()
         return redirect('user_app:profile')
     

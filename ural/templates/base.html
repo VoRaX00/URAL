@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA_Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href= {% static 'bootstrap5/css/bootstrap.min.css' %}>
@@ -25,29 +25,47 @@
                     <a class="nav-link {% if 'main' in request.path %}active{% endif %}" href="{% url "main:index" %}">Главная страница</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if 'viewCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
+                    {% if request.user.is_authenticated %}
+                      <a class="nav-link {% if 'viewCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:viewCar" %}">Найти машину</a>
+                    {% else %}
+                      <a class="nav-link" href="{% url "user_app:login" %}">Найти машину</a>
+                    {% endif %}
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if 'viewCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:viewCargo"%}">Найти груз</a>
+                    {% if request.user.is_authenticated %}
+                      <a class="nav-link {% if 'viewCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:viewCargo"%}">Найти груз</a>
+                    {% else %}
+                      <a class="nav-link" href="{% url "user_app:login" %}">Найти груз</a>
+                    {% endif %}
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if 'addCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
+                    {% if request.user.is_authenticated %}
+                      <a class="nav-link {% if 'addCar/' in request.path %}active{% endif %}" href="{% url "car_cargo:addCar" %}">Разместить машину</a>
+                    {% else %}
+                      <a class="nav-link" href="{% url "user_app:login" %}">Разместить машину</a>
+                    {% endif %}
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if 'addCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
+                    {% if request.user.is_authenticated %}
+                      <a class="nav-link {% if 'addCargo' in request.path %}active{% endif %}" href="{% url "car_cargo:addCargo" %}">Разместить груз</a>
+                      {% else %}
+                        <a class="nav-link" href="{% url "user_app:login" %}">Разместить груз</a>
+                      {% endif %}
                   </li>
                 </ul>
-                <ui class="navbar-nav ms-auto mb-2 mb-lg-0">
-                  <div class="dropdown">
-                    <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src={% static '/style/icons/notification.svg'%} style="max-width: 30px; max-height: 30px;">
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url "notification:myNotifications" %}">Мои уведомления</a></li>
-                      <li><a class="dropdown-item" href="{% url "notification:myResponses" %}">Мои отклики</a></li>
-                      <li><a class="dropdown-item" href="{% url "notification:match" %}">Согласованные предложения</a></li>
-                    </ul>
-                  </div>  
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  {% if request.user.is_authenticated %}
+                    <div class="dropdown">
+                      <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src={% static '/style/icons/notification.svg'%} style="max-width: 30px; max-height: 30px;">
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url "notification:myNotifications" %}">Мои уведомления</a></li>
+                        <li><a class="dropdown-item" href="{% url "notification:myResponses" %}">Мои отклики</a></li>
+                        <li><a class="dropdown-item" href="{% url "notification:match" %}">Согласованные предложения</a></li>
+                      </ul>
+                    </div> 
+                  {% endif %} 
                   <div class="dropdown">
                         <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src={% static '/style/icons/user-regular.svg'%} style="max-width: 30px; max-height: 30px;">
@@ -64,7 +82,7 @@
                             {% endif %}
                         </ul>
                     </div>  
-                </ui>
+                </ul>
               </div>
             </div>
         </nav>
