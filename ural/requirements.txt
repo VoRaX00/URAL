@@ -7,11 +7,10 @@ charset-normalizer==3.3.2
 cryptography==42.0.5
 distro==1.9.0
 Django==5.0.4
-docker==7.0.0
-docker-compose==1.29.2
-dockerpty==0.4.1
 docopt==0.6.2
 idna==3.6
+mysqlclient
+django-phonenumber-field
 jsonschema==3.2.0
 packaging==24.0
 paramiko==3.4.0
