@@ -99,19 +99,23 @@ def registration(request):
     return render(request, 'registration.html')
 
 def profile(request):
+    print('profile')
     return render(request, 'profile.html')
 
 def editProfile(request):
+    print('edit')
     if request.POST:
         email = request.POST.get('email')
         name = request.POST.get('name')
-        if not checkingNameEmail(request, email, name):
-            return redirect('user_app:registration')
+        if not checkingNameEmail(request, email, name) and (email != request.user.email 
+                                                            or name != request.user.name):
+            return redirect('user_app:edit_profile')
 
         request.user.name = name
         request.user.email = email
         request.user.about_me = request.POST.get('aboutMe')
         request.user.save()
+        print('edit')
         return redirect('user_app:profile')
     
     return render(request, 'editProfile.html')

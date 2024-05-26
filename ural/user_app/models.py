@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 from django.utils import timezone
-from phonenumber_field.modelfields import PhoneNumberField
+#from phonenumber_field.modelfields import PhoneNumberField
 class CustomUserManager(UserManager):
     use_in_migrations = True
 
@@ -35,7 +35,7 @@ class CustomUserManager(UserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255, blank=True, default='')
     email = models.EmailField(blank=True, default='', unique=True)
-    phone = PhoneNumberField(null=True, unique=False)
+    phone = models.BigIntegerField(null=True, unique=False) #PhoneNumberField(null=True, unique=False)
     about_me = models.TextField(max_length=700, null=False, default='Пусто', unique=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

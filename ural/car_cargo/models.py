@@ -1,6 +1,6 @@
 from django.db import models
 from user_app.models import User
-from phonenumber_field.modelfields import PhoneNumberField
+#from phonenumber_field.modelfields import PhoneNumberField
 
 class Cargo(models.Model):
     name = models.CharField(max_length=255, null=False, unique=False)
@@ -17,7 +17,7 @@ class Cargo(models.Model):
     loading_data = models.DateField(null=False, unique=False)
     unloading_data = models.DateField(null=False, unique=False)
 
-    phone = PhoneNumberField(null=False, blank=False, unique=False)
+    phone = models.BigIntegerField(null=False, blank=False, unique=False) #PhoneNumberField(null=False, blank=False, unique=False)
 
     loading_place = models.TextField(max_length=255, null=False, unique=False)
     unloading_place = models.TextField(max_length=255, null=False, unique=False)
@@ -53,7 +53,7 @@ class Car(models.Model):
 
     ready_from = models.DateField(null=False, unique=False)
     ready_to = models.DateField(null=False, unique=False)
-    phone = PhoneNumberField(null=False, blank=False, unique=False)
+    phone = models.BigIntegerField(null=False, blank=False, unique=False) #PhoneNumberField(null=False, blank=False, unique=False)
 
     comment = models.TextField(null=True, unique=False)
 
