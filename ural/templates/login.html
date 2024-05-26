@@ -14,11 +14,11 @@
       {% csrf_token %}
       <h2 class="text-center mb-4">Вход</h2>
       <div class="mb-3">
-          <label for="userEmail" class="form-label">Адрес электронной почты</label>
+          <label for="userEmail" class="form-label form-text">Адрес электронной почты</label>
           <input type="email" name="email" class="form-control" id="userEmail" aria-describedby="emailHelp" required>
           </div>
           <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Пароль</label>
+          <label for="exampleInputPassword1" class="form-label form-text">Пароль</label>
           <input type="password" name='password' class="form-control" id="exampleInputPassword1" required>
       </div>
       {% if form.errors %}
@@ -30,8 +30,8 @@
           {% endfor %}
         </div>
       {% endif %}
-      <a href="{% url 'user_app:registration' %}" class="register-link">Зарегистрироваться</a>
-      <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Отправить</button>  
+      <a href="{% url 'user_app:registration' %}" class="register-link form-text">Зарегистрироваться</a>
+      <button type="submit" class="btn btn-dark from-text" style="background-color: #217C6F;">Отправить</button>  
 
       {% comment %} <div class="d-flex justify-content-between align-items-center">
         <div class="mb-3">

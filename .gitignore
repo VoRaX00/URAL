@@ -2,6 +2,7 @@
 *.log
 *.pot
 *.pyc
-__pycache__
+/__pycache__
 /venv
 *_initial.py
+*cpython-310.pyc

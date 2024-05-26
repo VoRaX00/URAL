@@ -14,76 +14,76 @@
         <form class = 'card p-5' action="{% url "car_cargo:addCargo" %}" style="max-width: 800px" method="post">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="cargoName">Наименование груза:</label>
+                <label class="form-text" for="cargoName">Наименование груза:</label>
                 <input type="text" class="form-control" id="cargoName" name="cargoName">
             </div>
             <div class="mb-3 row">
                 <div class="col">
-                    <label for="length">Длина (м):</label>
+                    <label class="form-text" for="length">Длина (м):</label>
                     <input type="number" class="form-control" id="length" name="length" min="0" style="max-width: 100px">
                 </div>
                 <div class="col">
-                    <label for="width">Ширина (м):</label>
+                    <label class="form-text" for="width">Ширина (м):</label>
                     <input type="number" class="form-control" id="width" name="width" min="0" style="max-width: 100px">
                 </div>
                 <div class="col">
-                    <label for="height">Высота (м):</label>
+                    <label class="form-text" for="height">Высота (м):</label>
                     <input type="number" class="form-control" id="height" name="height" min="0" style="max-width: 100px">
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
-                    <label for="cargoWeight">Вес груза (т):</label>
+                    <label class="form-text" for="cargoWeight">Вес груза (т):</label>
                     <input type="number" class="form-control" id="cargoWeight" name="cargoWeight" min="0" style="max-width: 100px">
                 </div>
                 <div class="col-auto">
-                    <label for="volume">Объем (м^3):</label>
+                    <label class="form-text" for="volume">Объем (м^3):</label>
                     <input type="number" class="form-control" id="volume" name="volume" min="0" style="max-width: 100px">
                 </div>
                 <div class="col-auto">
-                    <label for="countPlace">Кол-во мест (расчет в европалеттах):</label>
+                    <label class="form-text" for="countPlace">Кол-во мест (расчет в европалеттах):</label>
                     <input type="number" class="form-control" id="countPlace" name="countPlace" min="0" style="max-width: 100px">
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
-                    <label for="loadingDate">Дата загрузки:</label>
+                    <label class="form-text" for="loadingDate">Дата загрузки:</label>
                     <input type="date" class="form-control" id="loadingDate" name="loadingDate">
                 </div>
                 <div class="col-auto">
-                    <label for="unloadingDate">Дата разгрузки:</label>
+                    <label class="form-text" for="unloadingDate">Дата разгрузки:</label>
                     <input type="date" class="form-control" id="unloadingDate" name="unloadingDate">
                 </div>
             </div>
             
             <div class="mb-3">
-                <label for="phone">Телефон:</label>
+                <label class="form-text" for="phone">Телефон:</label>
                 <input type="tel" class="form-control" id="phone" name="phone" style="max-width: 200px">
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
-                    <label for="loading_address">Адрес загрузки:</label>
+                    <label class="form-text" for="loading_address">Адрес загрузки:</label>
                     <input id="loading_address" name="loading_address" type="text" class="form-control"/>
                 </div>
             
                 <div class="col-auto">
-                    <label for="unloading_address">Адрес разгрузки:</label>
+                    <label class="form-text" for="unloading_address">Адрес разгрузки:</label>
                     <input type="text" class="form-control" id="unloading_address" name="unloading_address"/>
                 </div>
             </div>
             <div class="mb-3">
                 <div>
-                    <label for="deliveryCost">Способ оплаты:</label>
+                    <label class="form-text" for="deliveryCost">Способ оплаты:</label>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
                     <input class="form-check-input" type="checkbox" name="cash" id="cboxCash" value="cash">
-                    <label class="form-check-label" for="cboxCash">Наличные</label>
+                    <label class="form-text" class="form-check-label" for="cboxCash">Наличные</label>
                 </div>
                 <div class="col-auto">
                     <input class="form-check-input" type="checkbox" name="cash" id="cboxCashless" value="cashless">
-                    <label class="form-check-label" for="cboxCashless">Безналичный расчет</label>
+                    <label class="form-text" class="form-check-label" for="cboxCashless">Безналичный расчет</label>
                 </div>
                 <div class="col-auto" id="extra_checkbox"></div>
             </div>
@@ -94,18 +94,23 @@
                 <div class="col-8">
                     <div class="mb-3 row" id="price_cash_checkbox">
                         <div class="col-4">
-                            <label for="deliveryCostCash">Наличными</label>
+                            <label class="form-text" for="deliveryCostCash">Наличными</label>
                         </div>
                         <div class="col-8">
                             <input type="number" placeholder="Наличными" class="form-control" id="deliveryCostCash" name="deliveryCostCash" min="1" style="max-width: 300px">
                         </div>
                     </div>
                     <div class="mb-3 row" id="price_cashless_nds">
-                        
+                        <div class="col-4">
+                            <label for="deliveryCostNDS">С НДС</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="number" placeholder="С НДС" class="form-control" id="deliveryCostNDS" name="deliveryCostNDS" min="1" style="max-width: 300px">
+                        </div>
                     </div>
                     <div class="mb-3 row">
                         <div class="col-4">
-                            <label for="deliveryCostWithoutNDS">Без НДС</label>
+                            <label class="form-text" for="deliveryCostWithoutNDS">Без НДС</label>
                         </div>
                         <div class="col-8">
                             <input type="number" placeholder="Без НДС" class="form-control" id="deliveryCostWithoutNDS" name="deliveryCostWithoutNDS" min="1" style="max-width: 300px">
@@ -117,15 +122,15 @@
                         <input class="form-check-input" name="request_price" type="checkbox" id="requestPrice" value="request"/>
                     </div>
                     <div class="col-10">
-                        <label class="form-check-label" for="requestPrice">Запрос цены</label>
+                        <label class="form-check-label class="form-text"" for="requestPrice">Запрос цены</label>
                     </div>
                 </div>
             </div>
             <div class="mb-3">
-                <label for="comment" class="form-label">Комментарий:</label>
+                <label for="comment" class="form-label form-text">Комментарий:</label>
                 <textarea class="form-control" id="comment" name="comment" rows="5"></textarea>
             </div>                
-            <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Отправить</button>
+            <button type="submit" class="btn btn-dark form-text" style="background-color: #217C6F;">Отправить</button>
         </form>
     </div>
     <br/>

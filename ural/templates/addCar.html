@@ -12,13 +12,13 @@
         <form class = 'card p-5' action="{% url "car_cargo:addCar" %}"  method="post">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="car">Автомобиль</label>
+                <label class="form-text" for="car">Автомобиль</label>
                 <input type="text" name="car" id="car" class="form-control">
             </div>
             <div class="mb-3 row">
                 <div class="col">
-                    <label for="bodyType">Тип кузова:</label>
-                    <select class="form-multi-select" id="bodyType" name="bodyType" multiple>
+                    <label class="form-text" for="bodyType">Тип кузова:</label>
+                    <select class="form-multi-select form-text" id="bodyType" name="bodyType" multiple>
                         <option value="тентовый">Тентовый</option>
                         <option value="контейнер">Контейнер</option>
                         <option value="открытый конт.">Открытый конт.</option>
@@ -82,8 +82,8 @@
                     </select>
                 </div>
                 <div class="col">
-                    <label for="loadingType">Тип загрузки:</label>
-                    <select class="form-control" id="loadingType" name="loadingType" multiple>
+                    <label class="form-text" for="loadingType">Тип загрузки:</label>
+                    <select class="form-control form-text" id="loadingType" name="loadingType" multiple>
                         <option value="Боковая">Боковая</option>
                         <option value="Верхняя">Верхняя</option>
                         <option value="Задняя">Задняя</option>
@@ -106,58 +106,58 @@
             </div>
             <div class="mb-3 row">
                 <div class="col">
-                    <label for="capacity">Грузоподъемность, т:</label>
+                    <label class="form-text" for="capacity">Грузоподъемность, т:</label>
                     <input type="number" class="form-control" id="capacity" name="capacity">
                 </div>
                 <div class="col">
-                    <label for="volume">Объем, м^3:</label>
+                    <label class="form-text" for="volume">Объем, м^3:</label>
                     <input type="number" class="form-control" id="volume" name="volume">
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col">
-                    <label for="length">Внутренняя длина кузова:</label>
+                    <label class="form-text" for="length">Внутренняя длина кузова:</label>
                     <input type="number" class="form-control" id="length" name="length">
                 </div>
                 <div class="col">
-                    <label for="width">Внутренняя ширина кузова:</label>
+                    <label class="form-text" for="width">Внутренняя ширина кузова:</label>
                     <input type="number" class="form-control" id="width" name="width">
                 </div>
                 <div class="col">
-                    <label for="height">Внутренняя высота кузова:</label>
+                    <label class="form-text" for="height">Внутренняя высота кузова:</label>
                     <input type="number" class="form-control" id="height" name="height">
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col">
-                    <label for="place_from">Откуда:</label>
+                    <label class="form-text" for="place_from">Откуда:</label>
                     <input type="text" class="form-control" id="place_from" name="place_from"/>
                 </div>
                 <div class="col">
-                    <label for="place_to">Куда:</label>
+                    <label class="form-text" for="place_to">Куда:</label>
                     <input type="text" class="form-control" id="place_to" name="place_to"/>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col">
-                    <label for="readyFrom">Готов к загрузке с:</label>
+                    <label class="form-text" for="readyFrom">Готов к загрузке с:</label>
                     <input type="date" class="form-control" id="readyFrom" name="readyFrom">
                 </div>
                 <div class="col">
-                    <label for="readyTo">Готов к загрузке до:</label>
+                    <label class="form-text" for="readyTo">Готов к загрузке до:</label>
                     <input type="date" class="form-control" id="readyTo" name="readyTo">
                 </div>
             </div>
             
             <div class="mb-3">
-                <label for="phone">Телефон:</label>
+                <label class="form-text" for="phone">Телефон:</label>
                 <input type="tel" class="form-control" id="phone" name="phone" style="max-width: 200px">
             </div>
             <div class="mb-3">
-                <label for="comment" class="form-label">Комментарий:</label>
+                <label for="comment" class="form-label form-text">Комментарий:</label>
                 <textarea class="form-control" id="comment" name="comment" rows="5"></textarea>
             </div>                
-            <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Отправить</button>
+            <button type="submit" class="btn btn-dark form-text" style="background-color: #217C6F;">Отправить</button>
         </form>
     </div>
 {% endblock content %}
