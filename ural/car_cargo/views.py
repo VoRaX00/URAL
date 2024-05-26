@@ -63,7 +63,8 @@ def addCar(request):
     return render(request, 'addCar.html')
 
 def viewCargo(request):
-    cargs = Cargo.objects.all().select_related('user_id').order_by('-id')
+    user_id = request.user.id
+    cargs = Cargo.objects.all().select_related('user_id').exclude(user_id=user_id).order_by('-id')
     paginator = Paginator(cargs, per_page=4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -121,7 +122,7 @@ def arrayCars(all_cars):
     return cars
 
 def viewCar(request):
-    all_cars = Car.objects.all().select_related('user').order_by('-id')
+    all_cars = Car.objects.all().select_related('user').exclude(user=request.user.id).order_by('-id')
     cars = arrayCars(all_cars)
 
     paginator = Paginator(cars, per_page=4)
