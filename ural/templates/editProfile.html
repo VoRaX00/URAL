@@ -11,12 +11,20 @@
         <form class = 'card p-5' action= "{% url "user_app:edit_profile" %}" method="post">
             {% csrf_token %}
             <div class="mb-3">
-            <label for="exampleInputName" class="form-label form-text">Имя</label>
-            <input type="text" name='name' value="{{user.name}}" class="form-control" id="exampleInputName">
+                <label for="exampleInputName" class="form-label form-text">Имя</label>
+                <input type="text" name='name' value="{{user.name}}" class="form-control" id="exampleInputName">
             </div>
             <div class="mb-3">
-            <label for="exampleInputEmail" class="form-label form-text">Адрес электронной почты</label>
-            <input type="email" value="{{user.email}}" name='email' class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
+                <label for="exampleInputEmail" class="form-label form-text">Адрес электронной почты</label>
+                <input type="email" value="{{user.email}}" name='email' class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail" class="form-label form-text">Номер телефона</label>
+                {% if user.phone == None %}
+                    <input type="tel" value="" name='phone' class="form-control" id="InputPhone">
+                {% else %}
+                    <input type="tel" value="{{user.phone}}" name='phone' class="form-control" id="InputPhone">
+                {% endif %}
             </div>
             <div class="mb-3">
                 <label for="aboutMe" class="form-label form-text">Обо мне</label>

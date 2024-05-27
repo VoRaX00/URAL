@@ -103,16 +103,17 @@ def profile(request):
     return render(request, 'profile.html')
 
 def editProfile(request):
-    print('edit')
     if request.POST:
         email = request.POST.get('email')
         name = request.POST.get('name')
+        phone = request.POST.get('phone')
         if not checkingNameEmail(request, email, name) and (email != request.user.email 
                                                             or name != request.user.name):
             return redirect('user_app:edit_profile')
 
         request.user.name = name
         request.user.email = email
+        request.user.phone = phone
         request.user.about_me = request.POST.get('aboutMe')
         request.user.save()
         print('edit')
