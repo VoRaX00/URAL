@@ -6,13 +6,13 @@ class Cargo(models.Model):
     name = models.CharField(max_length=255, null=False, unique=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
-    length = models.PositiveIntegerField(null=False, unique=False)
-    width = models.PositiveIntegerField(null=False, unique=False)
-    height = models.PositiveIntegerField(null=False, unique=False)
+    length = models.FloatField(null=False, unique=False)
+    width = models.FloatField(null=False, unique=False)
+    height = models.FloatField(null=False, unique=False)
 
-    weight = models.PositiveIntegerField(null=False, unique=False)
-    volume = models.PositiveIntegerField(null=False, unique=False)
-    count_place = models.PositiveIntegerField(null=False, unique=False)
+    weight = models.FloatField(null=False, unique=False)
+    volume = models.FloatField(null=False, unique=False)
+    count_place = models.FloatField(null=False, unique=False)
 
     loading_data = models.DateField(null=False, unique=False)
     unloading_data = models.DateField(null=False, unique=False)
@@ -27,9 +27,9 @@ class Cargo(models.Model):
     bcashless_nds = models.BooleanField(null=True, unique=False)
     bcashless_without_nds = models.BooleanField(null=True, unique=False)
 
-    price_cash = models.PositiveIntegerField(null=True, unique=False)
-    price_cash_nds = models.PositiveIntegerField(null=True, unique=False)
-    price_cash_without_nds = models.PositiveIntegerField(null=True, unique=False)
+    price_cash = models.FloatField(null=True, unique=False)
+    price_cash_nds = models.FloatField(null=True, unique=False)
+    price_cash_without_nds = models.FloatField(null=True, unique=False)
     request_price = models.BooleanField(null=True, unique=False)
 
     comment = models.TextField(null=True, unique=False)
@@ -41,12 +41,12 @@ class Car(models.Model):
     car = models.CharField(max_length=200, null=False, unique=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
-    capacity = models.PositiveIntegerField(null=False, unique=False)
-    volume = models.PositiveIntegerField(null=False, unique=False)
+    capacity = models.FloatField(null=False, unique=False)
+    volume = models.FloatField(null=False, unique=False)
 
-    length = models.PositiveIntegerField(null=False, unique=False)
-    width = models.PositiveIntegerField(null=False, unique=False)
-    height = models.PositiveIntegerField(null=False, unique=False)
+    length = models.FloatField(null=False, unique=False)
+    width = models.FloatField(null=False, unique=False)
+    height = models.FloatField(null=False, unique=False)
 
     where_from = models.TextField(max_length=255, null=False, unique=False)
     where = models.TextField(max_length=255, null=False, unique=False)
