@@ -45,7 +45,7 @@
                                 <div class="mb-3">
                                     <form action="{% url 'notification:myResponses' %}" method="post">
                                         {% csrf_token %}
-                                        <input type="hidden" id="obj_car_id" name="obj_car_id" value="{{ obj }}">
+                                        <input type="hidden" id="obj_car_id" name="obj_car_id" value="{{ obj.id }}">
                                         <button type="submit" name="delete" id="delete" class="btn btn-dark" style="background-color: #DC143C;">Удалить</button>
                                     </form>
                                 </div>

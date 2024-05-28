@@ -245,7 +245,7 @@ def myCargo(request):
 
 def send_notification_cargo(request):
     if request.POST:
-        cargo = Cargo.objects.get(id=request.POST['cargo_id'])
+        cargo = Cargo.objects.get(id=request.POST.get('cargo_id'))
         if request.user == cargo.user_id:
             return render(request, 'viewCargo.html')
         notify = notifyCargo(cargo=cargo, first_user=request.user, second_user=cargo.user_id)
@@ -254,7 +254,7 @@ def send_notification_cargo(request):
 
 def send_notification_car(request):
     if request.POST:
-        car = Car.objects.get(id=request.POST['car.id'])
+        car = Car.objects.get(id=request.POST.get('car_id'))
         if request.user == car.user:
             return render(request, 'viewCar.html')
         notify = notifyCar(car=car, first_user=request.user, second_user=car.user)

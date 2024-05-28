@@ -2,9 +2,9 @@
 *.log
 *.pot
 *-310.pyc
-/__pycache__/*.pyc
+/__pycache__
 /venv
 *_initial.py
 *_more.py
 *cpython-310.pyc
-*.pyc
+ural/notification/__pycache__/views.cpython-310.pyc
