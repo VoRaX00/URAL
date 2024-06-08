@@ -6,6 +6,10 @@
     font-size: 1rem;
 }
 
+.search-input {
+    margin-right: 10px;
+}
+
 .card-text {
     font-size: 1rem;
 }

@@ -15,60 +15,60 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label class="form-text" for="cargoName">Наименование груза:</label>
-                <input type="text" class="form-control" id="cargoName" name="cargoName">
+                <input type="text" class="form-control" id="cargoName" name="cargoName" required>
             </div>
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text" for="length">Длина (м):</label>
-                    <input type="number" step="any" class="form-control" id="length" name="length" min="0" style="max-width: 100px">
+                    <input type="number" step="any" class="form-control" id="length" name="length" min="0" style="max-width: 100px" required>
                 </div>
                 <div class="col">
                     <label class="form-text" for="width">Ширина (м):</label>
-                    <input type="number" step="any" class="form-control" id="width" name="width" min="0" style="max-width: 100px">
+                    <input type="number" step="any" class="form-control" id="width" name="width" min="0" style="max-width: 100px" required>
                 </div>
                 <div class="col">
                     <label class="form-text" for="height">Высота (м):</label>
-                    <input type="number" step="any" class="form-control" id="height" name="height" min="0" style="max-width: 100px">
+                    <input type="number" step="any" class="form-control" id="height" name="height" min="0" style="max-width: 100px" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
                     <label class="form-text" for="cargoWeight">Вес груза (т):</label>
-                    <input type="number" step="any" class="form-control" id="cargoWeight" name="cargoWeight" min="0" style="max-width: 100px">
+                    <input type="number" step="any" class="form-control" id="cargoWeight" name="cargoWeight" min="0" style="max-width: 100px" required>
                 </div>
                 <div class="col-auto">
                     <label class="form-text" for="volume">Объем (м^3):</label>
-                    <input type="number" step="any" class="form-control" id="volume" name="volume" min="0" style="max-width: 100px">
+                    <input type="number" step="any" class="form-control" id="volume" name="volume" min="0" style="max-width: 100px" required>
                 </div>
                 <div class="col-auto">
                     <label class="form-text" for="countPlace">Кол-во мест (расчет в европалеттах):</label>
-                    <input type="number" step="any" class="form-control" id="countPlace" name="countPlace" min="0" style="max-width: 100px">
+                    <input type="number" step="any" class="form-control" id="countPlace" name="countPlace" min="0" style="max-width: 100px" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
                     <label class="form-text" for="loadingDate">Дата загрузки:</label>
-                    <input type="date" class="form-control" id="loadingDate" name="loadingDate">
+                    <input type="date" class="form-control" id="loadingDate" name="loadingDate" required>
                 </div>
                 <div class="col-auto">
                     <label class="form-text" for="unloadingDate">Дата разгрузки:</label>
-                    <input type="date" class="form-control" id="unloadingDate" name="unloadingDate">
+                    <input type="date" class="form-control" id="unloadingDate" name="unloadingDate" required>
                 </div>
             </div>
             
             <div class="mb-3">
                 <label class="form-text" for="phone">Телефон:</label>
-                <input type="tel" class="form-control" id="phone" name="phone" style="max-width: 200px">
+                <input type="tel" class="form-control" id="phone" name="phone" style="max-width: 200px" required>
             </div>
             <div class="mb-3 row">
                 <div class="col-auto">
                     <label class="form-text" for="loading_address">Адрес загрузки:</label>
-                    <input id="loading_address" name="loading_address" type="text" class="form-control"/>
+                    <input id="loading_address" name="loading_address" type="text" class="form-control" required>
                 </div>
             
                 <div class="col-auto">
                     <label class="form-text" for="unloading_address">Адрес разгрузки:</label>
-                    <input type="text" class="form-control" id="unloading_address" name="unloading_address"/>
+                    <input type="text" class="form-control" id="unloading_address" name="unloading_address" required>
                 </div>
             </div>
             <div class="mb-3">
@@ -115,7 +115,7 @@
                     </div>
                     <div class="mb-3 row">
                         <div class="col-auto">
-                            <input class="form-check-input" name="request_price" type="checkbox" id="requestPrice" value="request"/>
+                            <input class="form-check-input" name="request_price" type="checkbox" id="requestPrice" value="request">
                             <label class="form-check-label form-text" for="requestPrice">Запрос цены</label>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
 {% block javascript %}
     {% load static %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
     <script src={% static 'style/js/autocompleteAddress.js'%}></script>
     <script src={% static 'style/js/payment.js' %} ></script>
 {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

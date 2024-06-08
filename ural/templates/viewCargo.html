@@ -3,12 +3,32 @@
 {% block title %}Грузы{% endblock title %}
 
 {% block css %}
-    {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
-        <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
+<!--    <style>-->
+<!--        .search-input {-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+<!--    </style>-->
 {% endblock css %}
 
 {% block content %}
     <br/>
+
+    <div class="container mb-4" style="max-width: 32rem;">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form action="{% url 'car_cargo:viewCargo' %}" method="post">
+                    <div class="input-group">
+                        {% csrf_token %}
+                        <input type="text" class="form-control search-input" name="search_input" id="search-input" placeholder="Поиск...">
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" style="background-color: #217C6F;" type="submit">Поиск</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     {% for cargo in page_obj %}
         <div class="container" style="max-width: 32rem;">
             <div class="card">

@@ -5,47 +5,73 @@ from .models import Cargo, Car, typeBody, typeLoading, carTypeBody, carTypeLoadi
 from django.core.paginator import Paginator
 from notification.models import notifyCar, notifyCargo
 
+
 def addCargo(request):
     if request.POST:
         arrCash = request.POST.getlist('cash')
-        cash=False
+        cash = False
         cashless = False
         nds = False
         without_nds = False
         if 'cash' in arrCash:
-            cash=True
+            cash = True
         if 'cashless' in arrCash:
             cashless = True
             arrCash = request.POST.getlist('cashless')
             if 'nds' in arrCash:
-                nds=True
+                nds = True
             if 'without_nds' in arrCash:
-                without_nds=True
-        
+                without_nds = True
+
         arrCash = request.POST.getlist('request_price')
         request_price = False
         if len(arrCash) != 0:
             request_price = True
 
-        cargo = Cargo(name = request.POST['cargoName'], 
-            length = request.POST['length'], width = request.POST['width'], height = request.POST['height'],
-            weight = request.POST['cargoWeight'], volume = request.POST['volume'], count_place = request.POST['countPlace'],
-            loading_data = request.POST['loadingDate'], unloading_data = request.POST['unloadingDate'], phone = request.POST['phone'],
-            loading_place = request.POST['loading_address'], unloading_place = request.POST['unloading_address'], bcash=cash, 
-            bcashless=cashless, bcashless_nds=nds, bcashless_without_nds=without_nds, price_cash=request.POST['deliveryCostCash'],
-            price_cash_nds = request.POST['deliveryCostNDS'], price_cash_without_nds = request.POST['deliveryCostWithoutNDS'], 
-            request_price=request_price, comment = request.POST['comment'], user_id = request.user)
-         
+        price_cash = 0
+        price_cash_nds = 0
+        price_cash_without_nds = 0
+        if request.POST.get('deliveryCostCash'):
+            price_cash = request.POST.get('deliveryCostCash')
+        else:
+            price_cash = 0
+
+        if request.POST.get('deliveryCostNDS'):
+            price_cash_nds = request.POST.get('deliveryCostNDS')
+        else:
+            price_cash_nds = 0
+
+        if request.POST.get('deliveryCostWithoutNDS'):
+            price_cash_without_nds = request.POST.get('deliveryCostWithoutNDS')
+        else:
+            price_cash_without_nds = 0
+
+        cargo = Cargo(name=request.POST['cargoName'], length=request.POST['length'], width=request.POST['width'],
+                      height=request.POST['height'],
+                      weight=request.POST['cargoWeight'], volume=request.POST['volume'],
+                      count_place=request.POST['countPlace'],
+                      loading_data=request.POST['loadingDate'], unloading_data=request.POST['unloadingDate'],
+                      phone=request.POST['phone'],
+                      loading_place=request.POST['loading_address'], unloading_place=request.POST['unloading_address'],
+                      bcash=cash,
+                      bcashless=cashless, bcashless_nds=nds, bcashless_without_nds=without_nds,
+                      price_cash=price_cash,
+                      price_cash_nds=price_cash_nds,
+                      price_cash_without_nds=price_cash_without_nds,
+                      request_price=request_price, comment=request.POST['comment'], user_id=request.user)
         cargo.save()
     return render(request, 'addCargo.html')
+
 
 def addCar(request):
     if request.POST:
         id = request.user.id
-        car = Car(car=request.POST['car'],capacity = request.POST['capacity'], volume = request.POST['volume'], 
-                length = request.POST['length'], width = request.POST['width'], height = request.POST['height'], 
-                where_from=request.POST['place_from'], where=request.POST['place_to'], ready_to = request.POST['readyTo'],
-                ready_from = request.POST['readyFrom'], phone = request.POST['phone'], comment = request.POST['comment'], user_id=id)
+        car = Car(car=request.POST['car'], capacity=request.POST['capacity'], volume=request.POST['volume'],
+                  length=request.POST['length'], width=request.POST['width'], height=request.POST['height'],
+                  where_from=request.POST['place_from'], where=request.POST['place_to'],
+                  ready_to=request.POST['readyTo'],
+                  ready_from=request.POST['readyFrom'], phone=request.POST['phone'], comment=request.POST['comment'],
+                  user_id=id)
         car.save()
 
         typesBody = request.POST.getlist('bodyType')
@@ -59,12 +85,21 @@ def addCar(request):
             type_loading_instance = typeLoading.objects.get(name=i)
             car_type_loading = carTypeLoading(car=car, type_loading=type_loading_instance)
             car_type_loading.save()
-        
+
     return render(request, 'addCar.html')
 
+
 def viewCargo(request):
+    searchName = ''
+    if request.POST:
+        searchName = request.POST.get('search_input')
+
     user_id = request.user.id
-    cargs = Cargo.objects.all().select_related('user_id').exclude(user_id=user_id).order_by('-id')
+    if searchName != '':
+        cargs = Cargo.objects.all().filter(name=searchName).select_related('user_id').exclude(user_id=user_id).order_by('-id')
+    else:
+        cargs = Cargo.objects.all().select_related('user_id').exclude(user_id=user_id).order_by('-id')
+
     paginator = Paginator(cargs, per_page=4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -72,10 +107,10 @@ def viewCargo(request):
 
     return render(request, 'viewCargo.html', context=context)
 
+
 class VCar:
-    
     def __init__(self, _id, _name, _capacity, _volume, _length, _width, _height, _where_from, _where,
-                  _ready_from, _ready_to, _phone, _comment):
+                 _ready_from, _ready_to, _phone, _comment):
         self.name = _name
         self.capacity = _capacity
         self.volume = _volume
@@ -92,34 +127,37 @@ class VCar:
         self.type_body = []
         self.type_loading = []
 
+
 def arrayCars(all_cars):
-    cars=[]
+    cars = []
     for i in all_cars:
-        car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from, i.ready_to, i.phone, i.comment,)
+        car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from,
+                   i.ready_to, i.phone, i.comment, )
         typesBody = carTypeBody.objects.all().select_related('car', 'type_body')
         check = False
-        j=0
-        k=0
+        j = 0
+        k = 0
         while j < len(typesBody):
             if typesBody[j].car.id == i.id:
                 car.type_body.append(typesBody[j].type_body.name)
                 check = True
             elif check:
                 break
-            j+=1
+            j += 1
 
         check = False
         typesLoading = carTypeLoading.objects.all().select_related('car', 'type_loading')
         while k < len(typesLoading):
             if typesLoading[k].car.id == i.id:
                 car.type_loading.append(typesLoading[k].type_loading.name)
-                check=True
+                check = True
             elif check:
                 break
-                
-            k+=1
+
+            k += 1
         cars.append(car)
     return cars
+
 
 def viewCar(request):
     all_cars = Car.objects.all().select_related('user').exclude(user=request.user.id).order_by('-id')
@@ -132,11 +170,12 @@ def viewCar(request):
     context = {
         'page_obj': page_obj
     }
-    
+
     return render(request, 'viewCar.html', context=context)
 
+
 #не введено пока что в основной проект
-def editCar(post): 
+def editCar(post):
     car_id = post['car_id']
     car = Car.objects.get(id=car_id)
     car.car = post['car']
@@ -166,9 +205,10 @@ def editCar(post):
         car_type_loading = carTypeLoading(car=car, type_loading=type_loading_instance)
         #car_type_loading.save()
 
+
 def editCargo(post):
     cargo_id = post['cargo_id']
-        
+
     try:
         cargo = Cargo.objects.get(id=cargo_id)
 
@@ -180,10 +220,10 @@ def editCargo(post):
             cargo.bcashless = True
             arrCash = post.getlist('cashless')
             if 'nds' in arrCash:
-                cargo.bcashless_nds=True
+                cargo.bcashless_nds = True
             if 'without_nds' in arrCash:
-                cargo.bcashless_without_nds=True
-        
+                cargo.bcashless_without_nds = True
+
         arrCash = post.getlist('request_price')
 
         if len(arrCash) != 0:
@@ -205,11 +245,12 @@ def editCargo(post):
         cargo.price_cash_nds = post['deliveryCostNDS']
         cargo.price_cash_without_nds = post['deliveryCostWithoutNDS']
         cargo.comment = post['comment']
-    
+
         cargo.save()
 
     except ObjectDoesNotExist:
         return HttpResponseForbidden("груза с таким id не существует")
+
 
 def myCar(request):
     if request.POST:
@@ -217,7 +258,7 @@ def myCar(request):
         if not csrf_token == request.COOKIES.get('csrfmiddlewaretoken'):
             return HttpResponseForbidden("CSRF Token не действителен.")
         editCar(request.POST)
-        
+
     all_cars = Car.objects.all().select_related('user').filter(user_id=request.user).order_by('-id')
     cars = arrayCars(all_cars)
 
@@ -231,9 +272,10 @@ def myCar(request):
 
     return render(request, 'MyCar.html', context=context)
 
+
 def myCargo(request):
     if request.POST:
-        editCargo(request.POST) 
+        editCargo(request.POST)
 
     cargs = Cargo.objects.all().select_related('user_id').filter(user_id=request.user).order_by('-id')
     paginator = Paginator(cargs, per_page=4)
@@ -243,6 +285,7 @@ def myCargo(request):
 
     return render(request, 'MyCargo.html', context=context)
 
+
 def send_notification_cargo(request):
     if request.POST:
         cargo = Cargo.objects.get(id=request.POST.get('cargo_id'))
@@ -251,6 +294,7 @@ def send_notification_cargo(request):
         notify = notifyCargo(cargo=cargo, first_user=request.user, second_user=cargo.user_id)
         notify.save()
     return viewCargo(request)
+
 
 def send_notification_car(request):
     if request.POST:
