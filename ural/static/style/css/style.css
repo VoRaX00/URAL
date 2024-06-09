@@ -74,3 +74,7 @@ footer{
 .footer a, .footer li{
     color: #c8c8c8;
 }
+
+.form-margin {
+    margin-bottom: 40px;
+}
