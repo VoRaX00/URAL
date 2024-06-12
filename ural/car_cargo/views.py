@@ -1,31 +1,31 @@
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Cargo, Car, typeBody, typeLoading, carTypeBody, carTypeLoading
+from .models import Cargo, Car, TypeBody, TypeLoading, CarTypeBody, CarTypeLoading
 from django.core.paginator import Paginator
-from notification.models import notifyCar, notifyCargo
+from notification.models import NotifyCar, NotifyCargo
 
 
-def addCargo(request):
+def add_cargo(request):
     if request.POST:
-        arrCash = request.POST.getlist('cash')
+        arr_cash = request.POST.getlist('cash')
         cash = False
         cashless = False
         nds = False
         without_nds = False
-        if 'cash' in arrCash:
+        if 'cash' in arr_cash:
             cash = True
-        if 'cashless' in arrCash:
+        if 'cashless' in arr_cash:
             cashless = True
-            arrCash = request.POST.getlist('cashless')
-            if 'nds' in arrCash:
+            arr_cash = request.POST.getlist('cashless')
+            if 'nds' in arr_cash:
                 nds = True
-            if 'without_nds' in arrCash:
+            if 'without_nds' in arr_cash:
                 without_nds = True
 
-        arrCash = request.POST.getlist('request_price')
+        arr_cash = request.POST.getlist('request_price')
         request_price = False
-        if len(arrCash) != 0:
+        if len(arr_cash) != 0:
             request_price = True
 
         price_cash = 0
@@ -63,7 +63,7 @@ def addCargo(request):
     return render(request, 'addCargo.html')
 
 
-def addCar(request):
+def add_car(request):
     if request.POST:
         id = request.user.id
         car = Car(car=request.POST['car'], capacity=request.POST['capacity'], volume=request.POST['volume'],
@@ -74,29 +74,30 @@ def addCar(request):
                   user_id=id)
         car.save()
 
-        typesBody = request.POST.getlist('bodyType')
-        for i in typesBody:
-            type_body_instance = typeBody.objects.get(name=i)
-            car_type_body = carTypeBody(car=car, type_body=type_body_instance)
+        types_body = request.POST.getlist('bodyType')
+        for i in types_body:
+            type_body_instance = TypeBody.objects.get(name=i)
+            car_type_body = CarTypeBody(car=car, type_body=type_body_instance)
             car_type_body.save()
 
-        typesLoading = request.POST.getlist('loadingType')
-        for i in typesLoading:
-            type_loading_instance = typeLoading.objects.get(name=i)
-            car_type_loading = carTypeLoading(car=car, type_loading=type_loading_instance)
+        types_loading = request.POST.getlist('loadingType')
+        for i in types_loading:
+            type_loading_instance = TypeLoading.objects.get(name=i)
+            car_type_loading = CarTypeLoading(car=car, type_loading=type_loading_instance)
             car_type_loading.save()
 
     return render(request, 'addCar.html')
 
 
-def viewCargo(request):
-    searchName = ''
+def view_cargo(request):
+    search_name = ''
     if request.POST:
-        searchName = request.POST.get('search_input')
+        search_name = request.POST.get('search_input')
 
     user_id = request.user.id
-    if searchName != '':
-        cargs = Cargo.objects.all().filter(name=searchName).select_related('user_id').exclude(user_id=user_id).order_by('-id')
+    if search_name != '':
+        cargs = Cargo.objects.all().filter(name=search_name).select_related('user_id').exclude(user_id=user_id).order_by(
+            '-id')
     else:
         cargs = Cargo.objects.all().select_related('user_id').exclude(user_id=user_id).order_by('-id')
 
@@ -128,28 +129,28 @@ class VCar:
         self.type_loading = []
 
 
-def arrayCars(all_cars):
+def array_cars(all_cars):
     cars = []
     for i in all_cars:
         car = VCar(i.id, i.car, i.capacity, i.volume, i.length, i.width, i.height, i.where_from, i.where, i.ready_from,
                    i.ready_to, i.phone, i.comment, )
-        typesBody = carTypeBody.objects.all().select_related('car', 'type_body')
+        types_body = CarTypeBody.objects.all().select_related('car', 'type_body')
         check = False
         j = 0
         k = 0
-        while j < len(typesBody):
-            if typesBody[j].car.id == i.id:
-                car.type_body.append(typesBody[j].type_body.name)
+        while j < len(types_body):
+            if types_body[j].car.id == i.id:
+                car.type_body.append(types_body[j].type_body.name)
                 check = True
             elif check:
                 break
             j += 1
 
         check = False
-        typesLoading = carTypeLoading.objects.all().select_related('car', 'type_loading')
-        while k < len(typesLoading):
-            if typesLoading[k].car.id == i.id:
-                car.type_loading.append(typesLoading[k].type_loading.name)
+        types_loading = CarTypeLoading.objects.all().select_related('car', 'type_loading')
+        while k < len(types_loading):
+            if types_loading[k].car.id == i.id:
+                car.type_loading.append(types_loading[k].type_loading.name)
                 check = True
             elif check:
                 break
@@ -159,9 +160,9 @@ def arrayCars(all_cars):
     return cars
 
 
-def viewCar(request):
+def view_car(request):
     all_cars = Car.objects.all().select_related('user').exclude(user=request.user.id).order_by('-id')
-    cars = arrayCars(all_cars)
+    cars = array_cars(all_cars)
 
     paginator = Paginator(cars, per_page=4)
     page_number = request.GET.get('page')
@@ -175,7 +176,7 @@ def viewCar(request):
 
 
 #не введено пока что в основной проект
-def editCar(post):
+def edit_car(post):
     car_id = post['car_id']
     car = Car.objects.get(id=car_id)
     car.car = post['car']
@@ -195,38 +196,38 @@ def editCar(post):
     #дописать удаление всех типов кузова и потом добавление новых типов кузова
     typesBody = post.getlist('bodyType')
     for i in typesBody:
-        type_body_instance = typeBody.objects.get(name=i)
-        car_type_body = carTypeBody(car=car, type_body=type_body_instance)
+        type_body_instance = TypeBody.objects.get(name=i)
+        car_type_body = CarTypeBody(car=car, type_body=type_body_instance)
         #car_type_body.save()
 
     typesLoading = post.getlist('loadingType')
     for i in typesLoading:
-        type_loading_instance = typeLoading.objects.get(name=i)
-        car_type_loading = carTypeLoading(car=car, type_loading=type_loading_instance)
+        type_loading_instance = TypeLoading.objects.get(name=i)
+        car_type_loading = CarTypeLoading(car=car, type_loading=type_loading_instance)
         #car_type_loading.save()
 
 
-def editCargo(post):
+def edit_cargo(post):
     cargo_id = post['cargo_id']
 
     try:
         cargo = Cargo.objects.get(id=cargo_id)
 
-        arrCash = post.getlist('cash')
-        if 'cash' in arrCash:
+        arr_cash = post.getlist('cash')
+        if 'cash' in arr_cash:
             cargo.bcash = True
 
-        if 'cashless' in arrCash:
+        if 'cashless' in arr_cash:
             cargo.bcashless = True
-            arrCash = post.getlist('cashless')
-            if 'nds' in arrCash:
+            arr_cash = post.getlist('cashless')
+            if 'nds' in arr_cash:
                 cargo.bcashless_nds = True
-            if 'without_nds' in arrCash:
+            if 'without_nds' in arr_cash:
                 cargo.bcashless_without_nds = True
 
-        arrCash = post.getlist('request_price')
+        arr_cash = post.getlist('request_price')
 
-        if len(arrCash) != 0:
+        if len(arr_cash) != 0:
             cargo.request_price = True
 
         cargo.name = post['cargoName']
@@ -252,15 +253,15 @@ def editCargo(post):
         return HttpResponseForbidden("груза с таким id не существует")
 
 
-def myCar(request):
+def my_car(request):
     if request.POST:
         csrf_token = request.POST.get('csrfmiddlewaretoken')
         if not csrf_token == request.COOKIES.get('csrfmiddlewaretoken'):
             return HttpResponseForbidden("CSRF Token не действителен.")
-        editCar(request.POST)
+        edit_car(request.POST)
 
     all_cars = Car.objects.all().select_related('user').filter(user_id=request.user).order_by('-id')
-    cars = arrayCars(all_cars)
+    cars = array_cars(all_cars)
 
     paginator = Paginator(cars, per_page=4)
     page_number = request.GET.get('page')
@@ -273,9 +274,9 @@ def myCar(request):
     return render(request, 'MyCar.html', context=context)
 
 
-def myCargo(request):
+def my_cargo(request):
     if request.POST:
-        editCargo(request.POST)
+        edit_cargo(request.POST)
 
     cargs = Cargo.objects.all().select_related('user_id').filter(user_id=request.user).order_by('-id')
     paginator = Paginator(cargs, per_page=4)
@@ -291,9 +292,9 @@ def send_notification_cargo(request):
         cargo = Cargo.objects.get(id=request.POST.get('cargo_id'))
         if request.user == cargo.user_id:
             return render(request, 'viewCargo.html')
-        notify = notifyCargo(cargo=cargo, first_user=request.user, second_user=cargo.user_id)
+        notify = NotifyCargo(cargo=cargo, first_user=request.user, second_user=cargo.user_id)
         notify.save()
-    return viewCargo(request)
+    return view_cargo(request)
 
 
 def send_notification_car(request):
@@ -301,6 +302,6 @@ def send_notification_car(request):
         car = Car.objects.get(id=request.POST.get('car_id'))
         if request.user == car.user:
             return render(request, 'viewCar.html')
-        notify = notifyCar(car=car, first_user=request.user, second_user=car.user)
+        notify = NotifyCar(car=car, first_user=request.user, second_user=car.user)
         notify.save()
-    return viewCar(request)
+    return view_car(request)

@@ -3,35 +3,125 @@
 {% block title %}Профиль{% endblock title %}
 
 {% block css %}
-
+  {% load static %}
+  <link rel="stylesheet" href={% static 'style/css/profile.css' %}>
+  {% comment %} <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> {% endcomment %}
 {% endblock css %}
 
 {% block content %}
-  <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center">
-    <div class="row">
-        <div class="col-md-12 p-5">
-          <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">{{ user.name }}</h3>
+<section id="content" class="container">
+    <div class="page-heading">
+        <div class="media">
+          <div class="media-left pr30">
+            <a href="#">
+              <img class="media-object mw150" src="{{request.user.image.url}}" alt="connect" style="max-height:300px">
+            </a>
           </div>
-          <div class="card-body" style="max-width: 500px">
-            <div class="mb-3">
-              <h3 class="card-title">Контактная информация</h3>
-              <ul class="list-group">
-                <li class="list-group-item">Email: {{user.email}}</li>
-                <li class="list-group-item">Телефон: {% if user.phone == None %}{% else %}{{user.phone}}{% endif %}</li>
+          <div class="media-body va-m">
+            <h2 class="media-heading">
+              {{request.user.name}}
+            </h2>
+            <div class="media-links">
+              <ul class="list-inline list-unstyled">
+                <li class="hidden">
+                  <a href="#" title="linkedin link">
+                    <span class="fa fa-linkedin-square fs35 text-info"></span>
+                  </a>
+                </li>
+                <li class="hidden">
+                  <a href="#" title="github link">
+                    <span class="fa fa-github-square fs35 text-dark"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#" title="email link">
+                    <span class="fa fa-envelope-square fs35 text-muted"></span>
+                  </a>
+                </li>
               </ul>
             </div>
-            <div class="mb-3">
-              <h4 class="card-title">Обо мне</h3>
-              <p class="card-text"> {{user.about_me}} </p>
-              <a href="{% url "user_app:edit_profile" %}" class="btn btn-dark form-text" style="background-color: #217C6F;">Изменить профиль</a>
+            <div class="media-body va-m">
+              <form method="post" action="{% url "user_app:profile" %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark" style="background-color: #217C6F;">Редактировать профиль</button>
+              </form>
+              <br/>
+
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+          <div class="panel">
+            <div class="panel-heading">
+              <span class="panel-icon">
+                <i class="fa fa-star"></i>
+              </span>
+              <span class="panel-title">
+                <a href="{% url "main:index" %}" class="panel-title">Рейтинг пользователя</a>
+              </span>
+            </div>
+            <div class="panel-body pn">
+              <table class="table mbn tc-icon-1 tc-med-2 tc-bold-last">
+                <thead>
+                  <tr class="hidden">
+                    <th>Место в рейтинге</th>
+                    <th>Кол-во баллов</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><i class="fa fa-caret-up text-info pr10"></i>{{place}}</td>
+                    <td>{{ points }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-heading">
+              <span class="panel-icon">
+                <i class="fa fa-pencil"></i>
+              </span>
+              <span class="panel-title">Обо мне</span>
+            </div>
+            <div class="panel-body pb5">
+              <h6>{{request.user.about_me}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="tab-block">
+            <div class="tab-content p30" style="height: 730px;">
+              <div class="container mt-5">
+                <!-- Таблица активностей -->
+                <h2>Таблица достижений</h2>
+                <table class="table custom-table">
+                  <thead>
+                    <tr>
+                      <th>Позиция</th>
+                      <th>Название</th>
+                      <th>Количество баллов</th>
+                      <th>Файлы</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for activity in page_obj %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ activity.nameAchievement }}</td>
+                        <td>{{ activity.points }}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+</section>
 {% endblock content %}
 
 {% block javascript %}

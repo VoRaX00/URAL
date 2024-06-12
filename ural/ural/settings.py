@@ -17,11 +17,20 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+
 EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_USE_SSL = EMAIL_USE_SSL
 EMAIL_HOST = EMAIL_HOST
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_PORT = EMAIL_PORT
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -44,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'six',
 
     'main',
     'user_app',
@@ -61,6 +71,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'account.middleware.LocaleMiddleware',
+    # 'account.middleware.TimezoneMiddleware'
 ]
 
 ROOT_URLCONF = 'ural.urls'
@@ -139,6 +151,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
