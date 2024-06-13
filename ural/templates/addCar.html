@@ -6,7 +6,8 @@
     {% load static %}
     <link href="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css">
-    <link rel="stylesheet" href="{% static 'style/css/rows.css' %}"
+    <link rel="stylesheet" href="{% static 'style/css/rows.css' %}">
+     <link rel="stylesheet" href="{% static 'style/css/resizeFont.css' %}">
 {% endblock css %}
 
 {% block content %}
@@ -119,7 +120,7 @@
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text label-row" for="length">Внутренняя длина кузова:</label>
-                    <input type="number" step="any" min="0" class="form-control form-text" id="length" name="length" required>
+                    <input type="numbe  r" step="any" min="0" class="form-control form-text" id="length" name="length" required>
                 </div>
                 <div class="col">
                     <label class="form-text label-row" for="width">Внутренняя ширина кузова:</label>

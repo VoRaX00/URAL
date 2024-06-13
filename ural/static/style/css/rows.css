@@ -9,3 +9,22 @@
 .label-row-min{
     min-width: 129px;
 }
+
+.label-row-cargo {
+    min-width: 80px;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.form-group > div {
+    flex: 2;
+    margin: 5px;
+}
+.form-group > div label {
+    display: block;
+    margin-bottom: 3px;
+}
+

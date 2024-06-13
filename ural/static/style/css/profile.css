@@ -1,5 +1,6 @@
-body{margin-top:20px;
-background:#eee;
+body{
+    margin-top:0px;
+    background:#eee;
 }
 .fs35 {
     font-size: 35px !important;
@@ -181,6 +182,8 @@ background:#eee;
   padding: 2px 10px;
   border-radius: 1px;
 }
+
+
 .panel-heading .widget-menu .form-control.input-sm {
   margin-top: 9px;
   height: 22px;

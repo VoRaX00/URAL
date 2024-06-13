@@ -1,11 +1,37 @@
 {% extends "base.html" %}
 
+{%load static%}
+
 {% block title %}Добавить груз{% endblock title %}
 
 {% block css %}
     <link href="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet">
-        {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
-        <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'style/css/rows.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/resizeFont.css' %}">
+    <style>
+        .label-row-cargo {
+            min-width: 80px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .form-group > div {
+            flex: 2;
+            margin: 5px;
+        }
+        .form-group > div label {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .form-text-08 {
+            font-size: 0.7rem;
+        }
+    </style>
+
 {% endblock css %}
     
 {% block content %}
@@ -17,32 +43,34 @@
                 <label class="form-text" for="cargoName">Наименование груза:</label>
                 <input type="text" class="form-control" id="cargoName" name="cargoName" required>
             </div>
-            <div class="mb-3 row">
+            <div class="form-group">
                 <div class="col">
-                    <label class="form-text" for="length">Длина (м):</label>
-                    <input type="number" step="any" class="form-control" id="length" name="length" min="0" style="max-width: 100px" required>
+                    <label class="form-text label-row-cargo" for="length">Длина (м):</label>
+                    <input type="number" step="any" class="form-control label-row-cargo form-text" id="length" name="length" min="0" style="max-width: 100px" required>
                 </div>
                 <div class="col">
-                    <label class="form-text" for="width">Ширина (м):</label>
-                    <input type="number" step="any" class="form-control" id="width" name="width" min="0" style="max-width: 100px" required>
+                    <label class="form-text label-row-cargo" for="width">Ширина (м):</label>
+                    <input type="number" step="any" class="form-control label-row-cargo form-text" id="width" name="width" min="0" style="max-width: 100px" required>
                 </div>
                 <div class="col">
-                    <label class="form-text" for="height">Высота (м):</label>
-                    <input type="number" step="any" class="form-control" id="height" name="height" min="0" style="max-width: 100px" required>
+                    <label class="form-text label-row-cargo" for="height">Высота (м):</label>
+                    <input type="number" step="any" class="form-control label-row-cargo form-text" id="height" name="height" min="0" style="max-width: 100px" required>
                 </div>
             </div>
             <div class="mb-3 row">
-                <div class="col-auto">
-                    <label class="form-text" for="cargoWeight">Вес груза (т):</label>
-                    <input type="number" step="any" class="form-control" id="cargoWeight" name="cargoWeight" min="0" style="max-width: 100px" required>
+                <div class="col">
+                    <label class="form-text label-row" for="cargoWeight">Вес груза (т):</label>
+                    <input type="number" step="any" class="form-control label-row" id="cargoWeight" name="cargoWeight" min="0" required>
                 </div>
-                <div class="col-auto">
-                    <label class="form-text" for="volume">Объем (м^3):</label>
-                    <input type="number" step="any" class="form-control" id="volume" name="volume" min="0" style="max-width: 100px" required>
+                <div class="col">
+                    <label class="form-text label-row" for="volume">Объем (м^3):</label>
+                    <input type="number" step="any" class="form-control label-row" id="volume" name="volume" min="0" required>
                 </div>
-                <div class="col-auto">
-                    <label class="form-text" for="countPlace">Кол-во мест (расчет в европалеттах):</label>
-                    <input type="number" step="any" class="form-control" id="countPlace" name="countPlace" min="0" style="max-width: 100px" required>
+            </div>
+            <div class="mb-3 row">
+                <div class="col">
+                    <label class="form-text label-row" for="countPlace">Кол-во мест (расчет в европалеттах):</label>
+                    <input type="number" step="any" class="form-control label-row" id="countPlace" name="countPlace" min="0" required>
                 </div>
             </div>
             <div class="mb-3 row">

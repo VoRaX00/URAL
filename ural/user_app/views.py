@@ -8,6 +8,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
+from car_cargo.models import Cargo, Car
+from car_cargo.views import array_cars
+from django.core.paginator import Paginator
+from notification.views import objects_notify
+from django.utils import timezone
 
 
 def checking_name_email(request, email, name):
@@ -80,7 +85,8 @@ def registration(request):
 
         email_msg = EmailMessage(mail_subject, message, to=[email])
         email_msg.send()
-        return render(request, 'send_message_email.html') #HttpResponse('Please confirm your email address to complete the registration')
+        return render(request,
+                      'send_message_email.html')
 
     return render(request, 'registration.html')
 
@@ -100,8 +106,20 @@ def activate(request, uidb64, token):
 
 
 def profile(request):
-    print('profile')
-    return render(request, 'profile.html')
+    if request.POST:
+        return render(request, 'editProfile.html')
+    today = timezone.now().date()
+    my_cargs = Cargo.objects.all().filter(user_id=request.user).filter(loading_data__gt=today).order_by('-id')
+    my_cars = Car.objects.all().filter(user=request.user).filter(ready_from__gt=today).order_by('-id')
+    cars = array_cars(my_cars)
+    objects = objects_notify(my_cargs, cars)
+
+    paginator = Paginator(objects, per_page=5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
+
+    return render(request, 'profile.html', context=context)
 
 
 def edit_profile(request):
@@ -109,6 +127,7 @@ def edit_profile(request):
         email = request.POST.get('email')
         name = request.POST.get('name')
         phone = request.POST.get('phone')
+        img = request.FILES.get('image')
         if not checking_name_email(request, email, name) and (email != request.user.email
                                                               or name != request.user.name):
             return redirect('user_app:edit_profile')
@@ -116,9 +135,9 @@ def edit_profile(request):
         request.user.name = name
         request.user.email = email
         request.user.phone = phone
+        request.user.image = img
         request.user.about_me = request.POST.get('aboutMe')
         request.user.save()
-        print('edit')
         return redirect('user_app:profile')
 
     return render(request, 'editProfile.html')

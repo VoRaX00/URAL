@@ -4,6 +4,7 @@ from car_cargo.models import Cargo, CarTypeBody, CarTypeLoading
 from car_cargo.views import VCar
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.utils import timezone
 
 
 # класс объекта уведомления
@@ -42,7 +43,10 @@ def objects_notify(cargs, cars):
 
 def array_cars(cars):
     array = []
+    today = timezone.now().date()
     for i in cars:
+        if today > i.car.ready_from:
+            continue
         car = VCar(_id=i.car.id, _name=i.car.car, _capacity=i.car.capacity, _volume=i.car.volume, _length=i.car.length,
                    _width=i.car.width,
                    _height=i.car.height, _where_from=i.car.where_from, _where=i.car.where, _ready_from=i.car.ready_from,
@@ -76,9 +80,11 @@ def array_cars(cars):
 
 def array_cargs(cargs):
     array = []
+    today = timezone.now().date()
     for i in cargs:
         cargo = Cargo.objects.get(id=i.cargo.id)
-        array.append(cargo)
+        if cargo.loading_data >= today:
+            array.append(cargo)
     return array
 
 

@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Cargo, Car, TypeBody, TypeLoading, CarTypeBody, CarTypeLoading
 from django.core.paginator import Paginator
 from notification.models import NotifyCar, NotifyCargo
-
+from django.utils import timezone
 
 def add_cargo(request):
     if request.POST:
@@ -96,10 +96,12 @@ def view_cargo(request):
 
     user_id = request.user.id
     if search_name != '':
-        cargs = Cargo.objects.all().filter(name=search_name).select_related('user_id').exclude(user_id=user_id).order_by(
+        today = timezone.now().date()
+        cargs = Cargo.objects.all().filter(name=search_name).filter(loading_data__gt=today).select_related('user_id').exclude(user_id=user_id).order_by(
             '-id')
     else:
-        cargs = Cargo.objects.all().select_related('user_id').exclude(user_id=user_id).order_by('-id')
+        today = timezone.now().date()
+        cargs = Cargo.objects.all().filter(loading_data__gt=today).select_related('user_id').exclude(user_id=user_id).order_by('-id')
 
     paginator = Paginator(cargs, per_page=4)
     page_number = request.GET.get('page')
@@ -161,8 +163,18 @@ def array_cars(all_cars):
 
 
 def view_car(request):
-    all_cars = Car.objects.all().select_related('user').exclude(user=request.user.id).order_by('-id')
-    cars = array_cars(all_cars)
+    search_name = ''
+    if request.POST:
+        search_name = request.POST.get('search_input')
+
+    if search_name != '':
+        today = timezone.now().date()
+        all_cars = Car.objects.all().filter(car=search_name).filter(ready_from__gt=today).select_related('user').exclude(user=request.user.id).order_by('-id')
+        cars = array_cars(all_cars)
+    else:
+        today = timezone.now().date()
+        all_cars = Car.objects.all().filter(ready_from__gt=today).select_related('user').exclude(user=request.user.id).order_by('-id')
+        cars = array_cars(all_cars)
 
     paginator = Paginator(cars, per_page=4)
     page_number = request.GET.get('page')
