@@ -3,6 +3,10 @@ html, body{
     margin: 0;
 }
 
+.search-input {
+    margin-right: 10px;
+}
+
 section {
     padding: 50px 0;
 }
@@ -69,4 +73,8 @@ footer{
 
 .footer a, .footer li{
     color: #c8c8c8;
+}
+
+.form-margin {
+    margin-bottom: 40px;
 }

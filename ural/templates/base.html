@@ -75,8 +75,8 @@
                         <ul class="dropdown-menu">
                             {% if user.is_authenticated %}
                                 <li><a class="dropdown-item" href="{% url "user_app:profile" %}">Профиль</a></li>
-                                <li><a class="dropdown-item" href="{% url "car_cargo:myCargo" %}">Мои грузы</a></li>
-                                <li><a class="dropdown-item" href="{% url "car_cargo:myCar" %}">Мои машины</a></li>
+                                <!--<li><a class="dropdown-item" href="{% url "car_cargo:myCargo" %}">Мои грузы</a></li>
+                                <li><a class="dropdown-item" href="{% url "car_cargo:myCar" %}">Мои машины</a></li>-->
                                 <li><a class="dropdown-item" href="{% url "user_app:logout" %}">Выход</a></li>
                             {% else %}
                                 <li><a class="dropdown-item" href="{% url "user_app:login" %}">Вход</a></li>

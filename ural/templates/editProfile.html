@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="container min-vh-100 d-flex justify-content-center align-items-center">
-        <form class = 'card p-5' action= "{% url "user_app:edit_profile" %}" method="post">
+        <form class = 'card p-5' action= "{% url 'user_app:edit_profile' %}" enctype="multipart/form-data" method="post">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="exampleInputName" class="form-label form-text">Имя</label>
@@ -21,10 +21,15 @@
             <div class="mb-3">
                 <label for="exampleInputEmail" class="form-label form-text">Номер телефона</label>
                 {% if user.phone == None %}
-                    <input type="tel" value="" name='phone' class="form-control" id="InputPhone">
+                    <input type="tel" value="" name='phone' class="form-control" id='InputPhone'>
                 {% else %}
                     <input type="tel" value="{{user.phone}}" name='phone' class="form-control" id="InputPhone">
                 {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label form-text">Загрузите изображение</label>
+                <br/>
+                <input type="file" class="form-control-file" id="image" name="image" required>
             </div>
             <div class="mb-3">
                 <label for="aboutMe" class="form-label form-text">Обо мне</label>
@@ -34,7 +39,7 @@
         </form>
     </div>
 {% endblock content %}
-    
+
 {% block javascript %}
 
 {% endblock javascript %}

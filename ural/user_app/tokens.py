@@ -1,12 +1,7 @@
-from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
-from six import text_type
-
-class TockenGenerator(PasswordResetTokenGenerator):
-    def _make_hash_value(self, user, timestamp: int):
-        return (
-            text_type(user.pk) + text_type(timestamp)
+class TokenGenerator(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        return(
+            str(user.pk) + str(timestamp) + str(user.is_active)
         )
-    
-generate_token = TockenGenerator()
+account_activation_token = TokenGenerator()

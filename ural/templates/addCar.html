@@ -6,7 +6,8 @@
     {% load static %}
     <link href="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css">
-    <link rel="stylesheet" href="{% static 'style/css/rows.css' %}"
+    <link rel="stylesheet" href="{% static 'style/css/rows.css' %}">
+     <link rel="stylesheet" href="{% static 'style/css/resizeFont.css' %}">
 {% endblock css %}
 
 {% block content %}
@@ -15,12 +16,12 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label class="form-text" for="car">Автомобиль</label>
-                <input type="text" name="car" id="car" class="form-control">
+                <input type="text" name="car" id="car" class="form-control" required>
             </div>
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text" for="bodyType">Тип кузова:</label>
-                    <select class="form-multi-select form-text" id="bodyType" name="bodyType" multiple>
+                    <select class="form-multi-select form-text" id="bodyType" name="bodyType" multiple required>
                         <option value="тентовый">Тентовый</option>
                         <option value="контейнер">Контейнер</option>
                         <option value="открытый конт.">Открытый конт.</option>
@@ -109,51 +110,51 @@
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text label-row-min" for="capacity">Грузоподъемность, т:</label>
-                    <input type="number" class="form-control" id="capacity" name="capacity">
+                    <input type="number" step="any" min="0" class="form-control" id="capacity" name="capacity" required>
                 </div>
                 <div class="col">
                     <label class="form-text label-row-min" for="volume">Объем, м^3:</label>
-                    <input type="number" class="form-control" id="volume" name="volume">
+                    <input type="number" step="any" min="0" class="form-control" id="volume" name="volume" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text label-row" for="length">Внутренняя длина кузова:</label>
-                    <input type="number" step="any" min="0" class="form-control form-text" id="length" name="length">
+                    <input type="numbe  r" step="any" min="0" class="form-control form-text" id="length" name="length" required>
                 </div>
                 <div class="col">
                     <label class="form-text label-row" for="width">Внутренняя ширина кузова:</label>
-                    <input type="number" step="any" min="0" class="form-control form-text" id="width" name="width">
+                    <input type="number" step="any" min="0" class="form-control form-text" id="width" name="width" required>
                 </div>
                 <div class="col">
                     <label class="form-text label-row" for="height">Внутренняя высота кузова:</label>
-                    <input type="number" step="any" min="0" class="form-control form-text" id="height" name="height">
+                    <input type="number" step="any" min="0" class="form-control form-text" id="height" name="height" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text" for="place_from">Откуда:</label>
-                    <input type="text" class="form-control" id="place_from" name="place_from"/>
+                    <input type="text" class="form-control" id="place_from" name="place_from" required>
                 </div>
                 <div class="col">
                     <label class="form-text" for="place_to">Куда:</label>
-                    <input type="text" class="form-control" id="place_to" name="place_to"/>
+                    <input type="text" class="form-control" id="place_to" name="place_to" required>
                 </div>
             </div>
             <div class="mb-3 row">
                 <div class="col">
                     <label class="form-text" for="readyFrom">Готов к загрузке с:</label>
-                    <input type="date" class="form-control" id="readyFrom" name="readyFrom">
+                    <input type="date" class="form-control" id="readyFrom" name="readyFrom" required>
                 </div>
                 <div class="col">
                     <label class="form-text" for="readyTo">Готов к загрузке до:</label>
-                    <input type="date" class="form-control" id="readyTo" name="readyTo">
+                    <input type="date" class="form-control" id="readyTo" name="readyTo" required>
                 </div>
             </div>
             
             <div class="mb-3">
                 <label class="form-text" for="phone">Телефон:</label>
-                <input type="tel" class="form-control" id="phone" name="phone" style="max-width: 200px">
+                <input type="tel" class="form-control" id="phone" name="phone" style="max-width: 200px" required>
             </div>
             <div class="mb-3">
                 <label for="comment" class="form-label form-text">Комментарий:</label>
@@ -167,7 +168,7 @@
 {% block javascript %}
     {% load static %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
     <script src={% static 'style/js/autocompleteAddress.js'%}></script>
     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/js/multi-select-tag.js"></script>
     <script>

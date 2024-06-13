@@ -6,12 +6,20 @@
     font-size: 1rem;
 }
 
+.search-input {
+    margin-right: 10px;
+}
+
 .card-text {
     font-size: 1rem;
 }
 
 .form-text {
     font-size: 1.2rem;
+}
+
+.form-text-contact {
+    font-size: 1.rem;
 }
 
 .form-label{
@@ -35,6 +43,10 @@
         font-size: 1.1rem;
     }
 
+    .form-text-contact {
+        font-size: 1.rem;
+    }
+
     .form-label{
         font-size: 1.1rem;
     }
@@ -55,7 +67,11 @@
     }
 
     .form-text {
-        font-size: 1.0rem;
+        font-size: .8rem;
+    }
+
+    .form-text-contact {
+        font-size: 1.rem;
     }
 
     .form-label{
@@ -81,10 +97,14 @@
         font-size: .9rem;
     }
 
+
     .form-label{
         font-size: .9rem;
     }
-    
+
+    .form-text-contact {
+        font-size: 1.rem;
+    }
   }
 
   @media (max-width: 576px) {
@@ -105,6 +125,10 @@
 
     .form-label{
         font-size: .8rem;
+    }
+
+    .form-text-contact {
+        font-size: 1.rem;
     }
     
   }

@@ -1,25 +1,41 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}Машины{% endblock title %}
 
 {% block css %}
-
+    <link rel="stylesheet" href="{% static 'style/css/search.css' %}">
 {% endblock css %}
-    {% comment %} <link rel="stylesheet" href= {% static 'style/css/demo.css' %}>
-        <link rel="stylesheet" href= {% static 'style/css/intlTelInput.css' %}> {% endcomment %}
+
 {% block content %}
     <br/>
+    <div class="container content-with-filters">
+        <div class="container search-from form-margin" style="max-width: 32rem;">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <form action="{% url 'car_cargo:viewCargo' %}" method="post">
+                        <div class="input-group">
+                            {% csrf_token %}
+                            <input type="text" class="form-control search-input" name="search_input" id="search-input" placeholder="Поиск...">
+                            <div class="input-group-append">
+                                <button class="btn btn-dark" style="background-color: #217C6F;" type="submit">Поиск</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         {% for car in page_obj %}
             <div class="container" style="max-width: 32rem;">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#general{{car.id}}" 
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#general{{car.id}}"
                             type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Общее</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#parameter{{car.id}}" type="button" 
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#parameter{{car.id}}" type="button"
                             role="tab" aria-controls="profile-tab-pane" aria-selected="false">Характеристики</button>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -99,7 +115,8 @@
                 </div>
             </div>
         </br>
-    {% endfor %}
+        {% endfor %}
+    </div>
     <div class="mb-3" style="margin:0 auto; margin-top: auto">
         {% include 'pagination.html' %}
     </div> 

@@ -8,7 +8,8 @@ MAYBECHOICE = (
     ('u', 'Unknown'),
 )
 
-class notifyCargo(models.Model):
+
+class NotifyCargo(models.Model):
     first_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_user_cargo_notify')
     second_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_user_cargo_notify')
 
@@ -21,9 +22,10 @@ class notifyCargo(models.Model):
     comment_second_user = models.TextField(null=True, unique=False)
 
     class Meta:
-        db_table='notify_cargo'
+        db_table = 'notify_cargo'
 
-class notifyCar(models.Model):
+
+class NotifyCar(models.Model):
     first_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_user_notify')
     second_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_user_notify')
 
@@ -36,8 +38,7 @@ class notifyCar(models.Model):
     comment_second_user = models.TextField(null=True, unique=False)
 
     class Meta:
-        db_table='notify_car'
-
+        db_table = 'notify_car'
 
 # class matchCargo(models.Model):
 #     first_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_user_cargo_match')
@@ -48,4 +49,3 @@ class notifyCar(models.Model):
 # class matchCar(models.Model):
 #     first_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_user_car_match')
 #     second_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_user_car_match')
-
